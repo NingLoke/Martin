@@ -28,12 +28,14 @@ body {
 }
 
 .card {
+    position: relative;
     width: 100%;
     max-width: 500px;
     background: white;
     border-radius: 20px;
     padding: 25px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
 }
 
 h1 {
@@ -55,24 +57,23 @@ h1 {
 /* 班级选择 */
 
 .class-selector {
-    margin-top: 15px;
-    margin-bottom: 18px;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 100px;
 }
 
 .class-selector label {
-    display: block;
-    color: #777;
-    font-size: 13px;
-    margin-bottom: 6px;
+    display: none;
 }
 
 .class-select {
     width: 100%;
-    padding: 12px;
+    padding: 8px 6px;
     border: 1px solid #ddd;
-    border-radius: 11px;
+    border-radius: 9px;
     background: white;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
 }
 
