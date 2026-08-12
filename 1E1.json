@@ -3,14 +3,14 @@
     {
       "start": 720,
       "end": 840,
-      "subject": "Physics 1",
+      "subject": "Physics (Lec)",
       "type": "Lecture",
       "location": "Harry Perkins LT"
     },
     {
       "start": 930,
       "end": 1020,
-      "subject": "ICT",
+      "subject": "ICT (Lec)",
       "type": "Lecture",
       "location": "Auditorium"
     }
@@ -19,14 +19,14 @@
     {
       "start": 480,
       "end": 600,
-      "subject": "ICT",
+      "subject": "ICT (Lab)",
       "type": "Laboratory",
       "location": "PA3 103 (Computer Lab)"
     },
     {
       "start": 780,
       "end": 870,
-      "subject": "ICT",
+      "subject": "ICT (Lec)",
       "type": "Lecture",
       "location": "Auditorium"
     }
@@ -35,14 +35,14 @@
     {
       "start": 480,
       "end": 600,
-      "subject": "Physics 1",
+      "subject": "Physics (Tut)",
       "type": "Tutorial",
       "location": "LTCL 10 (HL2-110)"
     },
     {
       "start": 600,
       "end": 720,
-      "subject": "Physics 1",
+      "subject": "Physics (Lab)",
       "type": "Laboratory",
       "location": "SK2 101 (ME 101)"
     }
@@ -51,14 +51,14 @@
     {
       "start": 480,
       "end": 600,
-      "subject": "Physics 1",
+      "subject": "Physics (Lec)",
       "type": "Lecture",
       "location": "SK3 102 Lecture 1"
     },
     {
       "start": 900,
       "end": 1020,
-      "subject": "Physics 1",
+      "subject": "Physics (Tut)",
       "type": "Tutorial",
       "location": "PA3 207"
     }
@@ -67,7 +67,7 @@
     {
       "start": 900,
       "end": 1020,
-      "subject": "ICT",
+      "subject": "ICT (Lab)",
       "type": "Laboratory",
       "location": "PA3 103 (Computer Lab)"
     }
