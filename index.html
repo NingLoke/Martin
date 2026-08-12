@@ -59,12 +59,12 @@ h1 {
 /* 班级选择 */
 
 .class-selector {
-    position: absolute !important;
-    top: 20px;
-    right: 25px;
-    width: 70px;
-    margin: 0 !important;
+    position: absolute;
+    top: 18px;
+    left: 25px;
+    margin: 0;
 }
+
 .class-selector label {
     display: none;
 }
@@ -72,7 +72,7 @@ h1 {
 .class-select {
     width: 70px;
     height: 34px;
-    padding: 5px;
+    padding: 4px 6px;
     border: 1px solid #ddd;
     border-radius: 9px;
     background: white;
@@ -130,6 +130,7 @@ h1 {
 }
 
 .main-button {
+    .main-button {
     border: none;
     border-radius: 9px;
     width: 34px;
@@ -138,7 +139,6 @@ h1 {
     background: #f1f3f5;
     font-size: 16px;
     cursor: pointer;
-    white-space: nowrap;
 }
 .main-button:active {
     transform: scale(0.97);
@@ -383,21 +383,21 @@ h1 {
 
     <div class="buttons">
 
-        <button
-            class="main-button"
-            onclick="openTimetable()">
+<button
+    class="main-button"
+    onclick="openTimetable()">
 
-            📅 完整课表
+    📅
 
-        </button>
+</button>
 
-        <button
-            class="main-button"
-            onclick="openEditor()">
+<button
+    class="main-button"
+    onclick="openEditor()">
 
-            ✏️ 编辑课表
+    ✏️
 
-        </button>
+</button>
 
     </div>
 
