@@ -10,556 +10,369 @@
 
 <title>📖 My Timetable</title>
 
-
 <style>
-
-/* =====================================================
-   基础
-   ===================================================== */
 
 * {
     box-sizing: border-box;
 }
 
-
 body {
-
     margin: 0;
-
     min-height: 100vh;
-
     font-family: Arial, sans-serif;
-
     background: #f4f6f8;
-
     display: flex;
-
     justify-content: center;
-
     padding: 20px;
-
     color: #222;
 }
 
-
-/* =====================================================
-   主卡片
-   ===================================================== */
-
 .card {
-
     width: 100%;
-
     max-width: 500px;
-
     background: white;
-
     border-radius: 20px;
-
     padding: 25px;
-
-    box-shadow:
-        0 8px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
 }
 
-
 h1 {
-
     margin-top: 0;
-
     margin-bottom: 12px;
 }
 
-
 .time {
-
     color: #666;
-
     margin-bottom: 8px;
 }
 
-
 .status {
-
     font-size: 26px;
-
     font-weight: bold;
-
     margin: 20px 0;
 }
 
+/* 班级选择 */
 
-/* =====================================================
-   首页课程信息
-   ===================================================== */
-
-.info {
-
-    background: #f1f3f5;
-
-    padding: 18px;
-
-    border-radius: 15px;
-}
-
-
-.course {
-
-    margin-bottom: 25px;
-}
-
-
-.course:last-child {
-
-    margin-bottom: 0;
-}
-
-
-.past {
-
-    opacity: 0.35;
-}
-
-
-.label {
-
-    color: #777;
-
-    font-size: 13px;
-
-    margin-top: 10px;
-}
-
-
-.value {
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    margin-top: 4px;
-}
-
-
-.countdown {
-
-    font-size: 28px;
-
-    font-weight: bold;
-
-    margin-top: 5px;
-}
-
-
-/* =====================================================
-   首页按钮
-   ===================================================== */
-
-.buttons {
-
-    display: flex;
-
-    gap: 10px;
-
-    margin-top: 20px;
-}
-
-
-.main-button {
-
-    flex: 1;
-
-    border: none;
-
-    border-radius: 12px;
-
-    padding: 13px 10px;
-
-    background: #f1f3f5;
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-
-.main-button:hover {
-
-    background: #e2e5e8;
-}
-
-
-.main-button:active {
-
-    transform: scale(0.97);
-}
-
-
-/* =====================================================
-   弹窗
-   ===================================================== */
-
-.modal {
-
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    background: rgba(0,0,0,0.45);
-
-    padding: 20px;
-
-    z-index: 1000;
-
-    overflow-y: auto;
-}
-
-
-.modal-box {
-
-    width: 100%;
-
-    max-width: 500px;
-
-    margin: 20px auto;
-
-    background: white;
-
-    border-radius: 20px;
-
-    padding: 22px;
-
-    box-shadow:
-        0 10px 40px rgba(0,0,0,0.2);
-}
-
-
-.modal-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 15px;
-}
-
-
-.modal-header h2 {
-
-    margin: 0;
-}
-
-
-.close-button {
-
-    border: none;
-
-    background: #f1f3f5;
-
-    width: 38px;
-
-    height: 38px;
-
-    border-radius: 50%;
-
-    font-size: 20px;
-
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   星期按钮
-   ===================================================== */
-
-.day-buttons {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 7px;
-
+.class-selector {
+    margin-top: 15px;
     margin-bottom: 18px;
 }
 
-
-.day-button {
-
-    border: none;
-
-    padding: 9px 4px;
-
-    border-radius: 10px;
-
-    background: #f1f3f5;
-
-    cursor: pointer;
-
-    font-weight: bold;
-}
-
-
-.day-button.active {
-
-    background: #222;
-
-    color: white;
-}
-
-
-/* =====================================================
-   完整课表
-   ===================================================== */
-
-.full-course {
-
-    background: #f5f6f7;
-
-    border-radius: 13px;
-
-    padding: 15px;
-
-    margin-bottom: 10px;
-}
-
-
-.full-course-subject {
-
-    font-size: 18px;
-
-    font-weight: bold;
-
-    margin-bottom: 8px;
-}
-
-
-.full-course-info {
-
-    color: #666;
-
-    font-size: 14px;
-
-    line-height: 1.7;
-}
-
-
-.no-course {
-
-    text-align: center;
-
-    color: #888;
-
-    padding: 30px 10px;
-}
-
-
-/* =====================================================
-   编辑器
-   ===================================================== */
-
-.editor-course {
-
-    background: #f5f6f7;
-
-    border-radius: 15px;
-
-    padding: 15px;
-
-    margin-bottom: 12px;
-}
-
-
-.editor-title {
-
-    font-weight: bold;
-
-    font-size: 16px;
-
-    margin-bottom: 12px;
-}
-
-
-.input-group {
-
-    margin-bottom: 10px;
-}
-
-
-.input-group label {
-
+.class-selector label {
     display: block;
-
-    font-size: 13px;
-
     color: #777;
-
-    margin-bottom: 5px;
+    font-size: 13px;
+    margin-bottom: 6px;
 }
 
-
-.input-group input {
-
+.class-select {
     width: 100%;
-
-    padding: 10px;
-
+    padding: 12px;
     border: 1px solid #ddd;
-
-    border-radius: 9px;
-
-    font-size: 15px;
-}
-
-
-.time-row {
-
-    display: flex;
-
-    gap: 8px;
-}
-
-
-.time-row .input-group {
-
-    flex: 1;
-}
-
-
-/* =====================================================
-   编辑器按钮
-   ===================================================== */
-
-.delete-button {
-
-    width: 100%;
-
-    border: none;
-
-    border-radius: 9px;
-
-    padding: 10px;
-
-    background: #ffe5e5;
-
-    color: #c62828;
-
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-
-.add-button {
-
-    width: 100%;
-
-    border: none;
-
     border-radius: 11px;
-
-    padding: 13px;
-
-    background: #222;
-
-    color: white;
-
+    background: white;
+    font-size: 16px;
     font-weight: bold;
+}
 
-    cursor: pointer;
+/* 首页课程 */
 
+.info {
+    background: #f1f3f5;
+    padding: 18px;
+    border-radius: 15px;
+}
+
+.course {
+    margin-bottom: 25px;
+}
+
+.course:last-child {
+    margin-bottom: 0;
+}
+
+.past {
+    opacity: 0.35;
+}
+
+.label {
+    color: #777;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.value {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.countdown {
+    font-size: 28px;
+    font-weight: bold;
     margin-top: 5px;
 }
 
+/* 按钮 */
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.main-button {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 10px;
+    background: #f1f3f5;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.main-button:active {
+    transform: scale(0.97);
+}
+
+/* 弹窗 */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.close-button {
+    border: none;
+    background: #f1f3f5;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* 星期按钮 */
+
+.day-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+    margin-bottom: 18px;
+}
+
+.day-button {
+    border: none;
+    padding: 9px 4px;
+    border-radius: 10px;
+    background: #f1f3f5;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.day-button.active {
+    background: #222;
+    color: white;
+}
+
+/* 完整课表 */
+
+.full-course {
+    background: #f5f6f7;
+    border-radius: 13px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.full-course-subject {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.full-course-info {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.no-course {
+    text-align: center;
+    color: #888;
+    padding: 30px 10px;
+}
+
+/* 编辑器 */
+
+.editor-course {
+    background: #f5f6f7;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.editor-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+.time-row {
+    display: flex;
+    gap: 8px;
+}
+
+.time-row .input-group {
+    flex: 1;
+}
+
+/* 编辑器按钮 */
+
+.delete-button {
+    width: 100%;
+    border: none;
+    border-radius: 9px;
+    padding: 10px;
+    background: #ffe5e5;
+    color: #c62828;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.add-button {
+    width: 100%;
+    border: none;
+    border-radius: 11px;
+    padding: 13px;
+    background: #222;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
 
 .save-button {
-
     width: 100%;
-
     border: none;
-
     border-radius: 11px;
-
     padding: 13px;
-
     background: #e8f5e9;
-
     color: #2e7d32;
-
     font-weight: bold;
-
     cursor: pointer;
-
     margin-top: 10px;
 }
-
 
 .reset-button {
-
     width: 100%;
-
     border: none;
-
     border-radius: 11px;
-
     padding: 11px;
-
     background: #f1f3f5;
-
     color: #555;
-
     cursor: pointer;
-
     margin-top: 10px;
 }
-
 
 </style>
 
 </head>
 
-
 <body>
 
-
-<!-- =====================================================
-     首页
-     ===================================================== -->
+<!-- 首页 -->
 
 <div class="card">
 
     <h1>📖 My Timetable</h1>
-
 
     <div
         class="time"
         id="date">
     </div>
 
-
     <div
         class="time"
         id="clock">
     </div>
 
+    <!-- 班级选择 -->
+
+    <div class="class-selector">
+
+        <label>
+            当前班级
+        </label>
+
+        <select
+            id="classSelect"
+            class="class-select"
+            onchange="changeClass()">
+
+            <option>
+                正在读取班级...
+            </option>
+
+        </select>
+
+    </div>
 
     <div
         class="status"
         id="status">
+
+        正在读取课表...
+
     </div>
 
-
     <div id="details"></div>
-
 
     <div class="buttons">
 
@@ -570,7 +383,6 @@ h1 {
             📅 完整课表
 
         </button>
-
 
         <button
             class="main-button"
@@ -585,18 +397,13 @@ h1 {
 </div>
 
 
-
-<!-- =====================================================
-     完整课表
-     ===================================================== -->
+<!-- 完整课表 -->
 
 <div
     class="modal"
     id="timetableModal">
 
-
     <div class="modal-box">
-
 
         <div class="modal-header">
 
@@ -604,12 +411,9 @@ h1 {
                 📅 完整课表
             </h2>
 
-
             <button
                 class="close-button"
-                onclick="
-                    closeModal('timetableModal')
-                ">
+                onclick="closeModal('timetableModal')">
 
                 ×
 
@@ -617,35 +421,27 @@ h1 {
 
         </div>
 
-
         <div
             class="day-buttons"
             id="viewDayButtons">
         </div>
 
-
         <div
             id="fullTimetable">
         </div>
-
 
     </div>
 
 </div>
 
 
-
-<!-- =====================================================
-     编辑课表
-     ===================================================== -->
+<!-- 编辑课表 -->
 
 <div
     class="modal"
     id="editorModal">
 
-
     <div class="modal-box">
-
 
         <div class="modal-header">
 
@@ -653,12 +449,9 @@ h1 {
                 ✏️ 编辑课表
             </h2>
 
-
             <button
                 class="close-button"
-                onclick="
-                    closeModal('editorModal')
-                ">
+                onclick="closeModal('editorModal')">
 
                 ×
 
@@ -666,15 +459,12 @@ h1 {
 
         </div>
 
-
         <div
             class="day-buttons"
             id="editDayButtons">
         </div>
 
-
         <div id="editor"></div>
-
 
         <button
             class="add-button"
@@ -684,7 +474,6 @@ h1 {
 
         </button>
 
-
         <button
             class="save-button"
             onclick="saveSchedule()">
@@ -693,104 +482,397 @@ h1 {
 
         </button>
 
-
         <button
             class="reset-button"
             onclick="resetSchedule()">
 
-            ↩️ 清空我的课表
+            ↩️ 恢复班级默认课表
 
         </button>
-
 
     </div>
 
 </div>
 
 
-
 <script>
 
-
 /* =====================================================
-   空白课表
+   空白默认课表
    ===================================================== */
 
 const defaultSchedule = {
 
-    0: [],   // 星期一
-
-    1: [],   // 星期二
-
-    2: [],   // 星期三
-
-    3: [],   // 星期四
-
-    4: [],   // 星期五
-
-    5: [],   // 星期六
-
-    6: []    // 星期日
+    0: [],
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: []
 
 };
 
 
-
 /* =====================================================
-   从浏览器读取个人课表
-   ===================================================== */
-
-let savedSchedule =
-    localStorage.getItem(
-        "myTimetable"
-    );
-
-
-let schedule;
-
-
-if (savedSchedule) {
-
-    schedule =
-        JSON.parse(savedSchedule);
-
-}
-
-else {
-
-    schedule =
-        JSON.parse(
-            JSON.stringify(
-                defaultSchedule
-            )
-        );
-
-}
-
-
-
-/* =====================================================
-   星期名称
+   星期
    ===================================================== */
 
 const dayNames = [
 
     "星期一",
-
     "星期二",
-
     "星期三",
-
     "星期四",
-
     "星期五",
-
     "星期六",
-
     "星期日"
 
 ];
 
+
+/* =====================================================
+   全局变量
+   ===================================================== */
+
+let classList = [];
+
+let currentClass = "";
+
+let schedule =
+    JSON.parse(
+        JSON.stringify(defaultSchedule)
+    );
+
+let selectedViewDay = 0;
+
+let selectedEditDay = 0;
+
+
+/* =====================================================
+   HTML 安全处理
+   ===================================================== */
+
+function escapeHTML(text) {
+
+    return String(text)
+
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   复制课表
+   ===================================================== */
+
+function copySchedule(data) {
+
+    return JSON.parse(
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =====================================================
+   从 localStorage 读取个人修改
+   ===================================================== */
+
+function loadPersonalSchedule(className) {
+
+    const key =
+        "myTimetable_" + className;
+
+    const saved =
+        localStorage.getItem(key);
+
+    if (saved) {
+
+        try {
+
+            return JSON.parse(saved);
+
+        }
+
+        catch {
+
+            return copySchedule(
+                defaultSchedule
+            );
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =====================================================
+   保存个人课表
+   ===================================================== */
+
+function savePersonalSchedule() {
+
+    const key =
+        "myTimetable_" + currentClass;
+
+    localStorage.setItem(
+
+        key,
+
+        JSON.stringify(schedule)
+
+    );
+
+}
+
+
+/* =====================================================
+   读取班级 JSON
+   ===================================================== */
+
+async function loadClass(className) {
+
+    currentClass = className;
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        "正在读取 " + className + "...";
+
+    try {
+
+        const classInfo =
+            classList.find(
+
+                item =>
+                    item.name === className
+
+            );
+
+        if (!classInfo) {
+
+            throw new Error(
+                "找不到班级"
+            );
+
+        }
+
+        const response =
+            await fetch(
+                classInfo.file
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "无法读取 " +
+                classInfo.file
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+
+        /*
+           如果之前修改过这个班级，
+           使用个人版本。
+
+           如果没有修改，
+           使用 JSON 默认课表。
+        */
+
+        const personal =
+            loadPersonalSchedule(
+                className
+            );
+
+        if (personal) {
+
+            schedule =
+                personal;
+
+        }
+
+        else {
+
+            schedule =
+                copySchedule(data);
+
+        }
+
+
+        update();
+
+        renderViewDays();
+
+        renderEditDays();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        schedule =
+            copySchedule(
+                defaultSchedule
+            );
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "❌ 无法读取 " + className;
+
+    }
+
+}
+
+
+/* =====================================================
+   读取 classes.json
+   ===================================================== */
+
+async function loadClasses() {
+
+    try {
+
+        const response =
+            await fetch(
+                "classes.json"
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "无法读取 classes.json"
+            );
+
+        }
+
+        classList =
+            await response.json();
+
+        const select =
+            document.getElementById(
+                "classSelect"
+            );
+
+        select.innerHTML = "";
+
+
+        classList.forEach(
+
+            item => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    item.name;
+
+                option.textContent =
+                    item.name;
+
+                select.appendChild(
+                    option
+                );
+
+            }
+
+        );
+
+
+        if (
+            classList.length === 0
+        ) {
+
+            throw new Error(
+                "没有班级"
+            );
+
+        }
+
+
+        const savedClass =
+            localStorage.getItem(
+                "selectedClass"
+            );
+
+
+        const firstClass =
+
+            classList.some(
+
+                item =>
+                    item.name === savedClass
+
+            )
+
+            ? savedClass
+
+            : classList[0].name;
+
+
+        select.value =
+            firstClass;
+
+
+        await loadClass(
+            firstClass
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "❌ 无法读取班级列表";
+
+    }
+
+}
+
+
+/* =====================================================
+   切换班级
+   ===================================================== */
+
+async function changeClass() {
+
+    const select =
+        document.getElementById(
+            "classSelect"
+        );
+
+    const className =
+        select.value;
+
+    localStorage.setItem(
+        "selectedClass",
+        className
+    );
+
+    await loadClass(
+        className
+    );
+
+}
 
 
 /* =====================================================
@@ -804,10 +886,8 @@ function clockTime(minutes) {
             minutes / 60
         );
 
-
     const mins =
         minutes % 60;
-
 
     return (
 
@@ -826,7 +906,6 @@ function clockTime(minutes) {
     );
 
 }
-
 
 
 /* =====================================================
@@ -852,7 +931,6 @@ function courseTime(course) {
 }
 
 
-
 /* =====================================================
    HH:MM → 分钟
    ===================================================== */
@@ -861,7 +939,6 @@ function timeToMinutes(time) {
 
     const parts =
         time.split(":");
-
 
     return (
 
@@ -876,13 +953,11 @@ function timeToMinutes(time) {
 }
 
 
-
 /* =====================================================
-   倒计时格式
+   倒计时
    ===================================================== */
 
 function formatTime(totalMinutes) {
-
 
     const totalSeconds =
 
@@ -896,16 +971,12 @@ function formatTime(totalMinutes) {
 
         );
 
-
     const hours =
-
         Math.floor(
             totalSeconds / 3600
         );
 
-
     const minutes =
-
         Math.floor(
 
             (totalSeconds % 3600)
@@ -913,11 +984,8 @@ function formatTime(totalMinutes) {
 
         );
 
-
     const seconds =
-
         totalSeconds % 60;
-
 
     let result = "";
 
@@ -950,13 +1018,11 @@ function formatTime(totalMinutes) {
 }
 
 
-
 /* =====================================================
-   找未来最近的上课日
+   找未来最近上课日
    ===================================================== */
 
 function findFutureDay(day) {
-
 
     for (
 
@@ -968,13 +1034,11 @@ function findFutureDay(day) {
 
     ) {
 
-
         const futureDay =
-
             (day + offset) % 7;
 
-
         if (
+            schedule[futureDay] &&
             schedule[futureDay].length > 0
         ) {
 
@@ -990,27 +1054,22 @@ function findFutureDay(day) {
 
     }
 
-
     return null;
 
 }
 
 
-
 /* =====================================================
-   计算未来课程倒计时
+   未来课程倒计时
    ===================================================== */
 
 function futureCountdown(
 
     currentTime,
-
     courseStart,
-
     offset
 
 ) {
-
 
     return (
 
@@ -1029,27 +1088,21 @@ function futureCountdown(
 }
 
 
-
 /* =====================================================
-   首页课程 HTML
+   首页课程
    ===================================================== */
 
 function makeCourseHTML(
 
     course,
-
     distance,
-
     highlight,
-
     past
 
 ) {
 
-
     let className =
         "course";
-
 
     if (past) {
 
@@ -1057,7 +1110,6 @@ function makeCourseHTML(
             " past";
 
     }
-
 
     let html = `
 
@@ -1109,21 +1161,17 @@ function makeCourseHTML(
             ${escapeHTML(course.subject)}
         </div>
 
-
         <div class="label">
             时间
         </div>
-
 
         <div class="value">
             ${courseTime(course)}
         </div>
 
-
         <div class="label">
             地点
         </div>
-
 
         <div class="value">
             ${escapeHTML(course.location)}
@@ -1142,7 +1190,6 @@ function makeCourseHTML(
             <div class="label">
                 距离
             </div>
-
 
             <div class="countdown">
                 ${formatTime(distance)}
@@ -1165,53 +1212,40 @@ function makeCourseHTML(
 }
 
 
-
 /* =====================================================
-   首页主程序
+   首页更新
    ===================================================== */
 
 function update() {
 
-
     const now =
         new Date();
-
 
     const jsDay =
         now.getDay();
 
-
     /*
-       JavaScript：
-
+       JS:
        Sunday = 0
-       Monday = 1
-       ...
 
-       转成：
-
+       转换：
        Monday = 0
        Tuesday = 1
        ...
-
        Sunday = 6
     */
 
     const day =
         (jsDay + 6) % 7;
 
-
     const hour =
         now.getHours();
-
 
     const minute =
         now.getMinutes();
 
-
     const second =
         now.getSeconds();
-
 
     const time =
 
@@ -1226,22 +1260,11 @@ function update() {
         second / 60;
 
 
-
-    /* =================================================
-       日期
-       ================================================= */
-
     document.getElementById(
         "date"
     ).textContent =
-
         dayNames[day];
 
-
-
-    /* =================================================
-       时间
-       ================================================= */
 
     document.getElementById(
         "clock"
@@ -1269,15 +1292,11 @@ function update() {
             .padStart(2, "0");
 
 
-
     const today =
-        schedule[day];
+        schedule[day] || [];
 
 
-
-    /* =================================================
-       找正在上的课
-       ================================================= */
+    /* 正在上课 */
 
     const currentIndex =
         today.findIndex(
@@ -1293,15 +1312,9 @@ function update() {
         );
 
 
-
-    /* =================================================
-       正在上课
-       ================================================= */
-
     if (
         currentIndex !== -1
     ) {
-
 
         const current =
             today[currentIndex];
@@ -1310,7 +1323,6 @@ function update() {
         document.getElementById(
             "status"
         ).textContent =
-
             "📖 现在上课";
 
 
@@ -1339,7 +1351,6 @@ function update() {
 
             (course, index) => {
 
-
                 if (
                     index === currentIndex
                 ) {
@@ -1357,11 +1368,8 @@ function update() {
                         makeCourseHTML(
 
                             course,
-
                             null,
-
                             false,
-
                             true
 
                         );
@@ -1374,11 +1382,8 @@ function update() {
                         makeCourseHTML(
 
                             course,
-
                             course.start - time,
-
                             false,
-
                             false
 
                         );
@@ -1399,7 +1404,8 @@ function update() {
 
         document.getElementById(
             "details"
-        ).innerHTML = html;
+        ).innerHTML =
+            html;
 
 
         return;
@@ -1407,10 +1413,7 @@ function update() {
     }
 
 
-
-    /* =================================================
-       今天还有课
-       ================================================= */
+    /* 今天还有课程 */
 
     const nextIndex =
         today.findIndex(
@@ -1424,7 +1427,6 @@ function update() {
     if (
         nextIndex !== -1
     ) {
-
 
         const next =
             today[nextIndex];
@@ -1478,7 +1480,6 @@ function update() {
 
             (course, index) => {
 
-
                 if (
                     index === nextIndex
                 ) {
@@ -1496,11 +1497,8 @@ function update() {
                         makeCourseHTML(
 
                             course,
-
                             null,
-
                             false,
-
                             true
 
                         );
@@ -1513,11 +1511,8 @@ function update() {
                         makeCourseHTML(
 
                             course,
-
                             course.start - time,
-
                             false,
-
                             false
 
                         );
@@ -1538,7 +1533,8 @@ function update() {
 
         document.getElementById(
             "details"
-        ).innerHTML = html;
+        ).innerHTML =
+            html;
 
 
         return;
@@ -1546,10 +1542,7 @@ function update() {
     }
 
 
-
-    /* =================================================
-       今天没有剩余课程
-       ================================================= */
+    /* 今天彻底没有课程 */
 
     const future =
         findFutureDay(day);
@@ -1559,32 +1552,26 @@ function update() {
         future === null
     ) {
 
-
         document.getElementById(
             "status"
         ).textContent =
-
             "自由！";
-
 
         document.getElementById(
             "details"
-        ).innerHTML = "";
-
+        ).innerHTML =
+            "";
 
         return;
 
     }
 
 
-
     const futureDay =
         future.day;
 
-
     const offset =
         future.offset;
-
 
     const futureSchedule =
         schedule[futureDay];
@@ -1593,7 +1580,6 @@ function update() {
     document.getElementById(
         "status"
     ).textContent =
-
         "自由！";
 
 
@@ -1604,7 +1590,6 @@ function update() {
             <div class="label">
                 下一上课日
             </div>
-
 
             <div class="value">
                 ${dayNames[futureDay]}
@@ -1617,15 +1602,12 @@ function update() {
 
         (course, index) => {
 
-
             const distance =
 
                 futureCountdown(
 
                     time,
-
                     course.start,
-
                     offset
 
                 );
@@ -1635,11 +1617,8 @@ function update() {
                 makeCourseHTML(
 
                     course,
-
                     distance,
-
                     index === 0,
-
                     false
 
                 );
@@ -1658,370 +1637,261 @@ function update() {
 
     document.getElementById(
         "details"
-    ).innerHTML = html;
+    ).innerHTML =
+        html;
 
 }
 
 
-
 /* =====================================================
-   HTML 安全处理
+   完整课表星期按钮
    ===================================================== */
 
-function escapeHTML(text) {
+function renderViewDays() {
 
-    return String(text)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
+    const container =
+        document.getElementById(
+            "viewDayButtons"
         );
 
-}
-
-
-
-/* =====================================================
-   关闭弹窗
-   ===================================================== */
-
-function closeModal(id) {
-
-    document.getElementById(
-        id
-    ).style.display = "none";
-
-}
-
-
-
-/* =====================================================
-   完整课表
-   ===================================================== */
-
-let viewDay = 0;
-
-
-
-function openTimetable() {
-
-
-    document.getElementById(
-        "timetableModal"
-    ).style.display = "block";
-
-
-    const jsDay =
-        new Date().getDay();
-
-
-    viewDay =
-        (jsDay + 6) % 7;
-
-
-    createViewDayButtons();
-
-    showFullTimetable();
-
-}
-
-
-
-function createViewDayButtons() {
-
-
-    let html = "";
+    container.innerHTML = "";
 
 
     dayNames.forEach(
 
-        (name, index) => {
+        (dayName, index) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "day-button";
 
 
-            html += `
+            if (
+                index === selectedViewDay
+            ) {
 
-                <button
+                button.classList.add(
+                    "active"
+                );
 
-                    class="
-                        day-button
-                        ${index === viewDay
-                            ? "active"
-                            : ""}
-                    "
+            }
 
-                    onclick="
-                        selectViewDay(
-                            ${index}
-                        )
-                    ">
 
-                    ${name.replace(
-                        "星期",
-                        ""
-                    )}
+            button.textContent =
+                dayName;
 
-                </button>
 
-            `;
+            button.onclick = function() {
+
+                selectedViewDay =
+                    index;
+
+                renderViewDays();
+
+            };
+
+
+            container.appendChild(
+                button
+            );
 
         }
 
     );
 
 
-    document.getElementById(
-        "viewDayButtons"
-    ).innerHTML = html;
+    renderFullTimetable();
 
 }
 
 
+/* =====================================================
+   显示完整课表
+   ===================================================== */
 
-function selectViewDay(day) {
+function renderFullTimetable() {
 
-
-    viewDay = day;
-
-
-    createViewDayButtons();
-
-    showFullTimetable();
-
-}
-
-
-
-function showFullTimetable() {
+    const container =
+        document.getElementById(
+            "fullTimetable"
+        );
 
 
     const courses =
-        schedule[viewDay];
-
-
-    let html = "";
+        schedule[selectedViewDay] || [];
 
 
     if (
         courses.length === 0
     ) {
 
-
-        html = `
+        container.innerHTML = `
 
             <div class="no-course">
-
-                📭 这一天没有课程
-
+                今天没有课程
             </div>
 
         `;
 
-    }
-
-    else {
-
-
-        courses.forEach(
-
-            course => {
-
-
-                html += `
-
-                    <div class="full-course">
-
-                        <div
-                            class="
-                                full-course-subject
-                            ">
-
-                            ${escapeHTML(
-                                course.subject
-                            )}
-
-                        </div>
-
-
-                        <div
-                            class="
-                                full-course-info
-                            ">
-
-                            🕐
-                            ${courseTime(course)}
-
-                            <br>
-
-                            📍
-                            ${escapeHTML(
-                                course.location
-                            )}
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-
-        );
+        return;
 
     }
 
 
-    document.getElementById(
-        "fullTimetable"
-    ).innerHTML = html;
+    container.innerHTML = "";
+
+
+    courses.forEach(
+
+        course => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.className =
+                "full-course";
+
+
+            div.innerHTML = `
+
+                <div class="full-course-subject">
+
+                    ${escapeHTML(
+                        course.subject
+                    )}
+
+                </div>
+
+                <div class="full-course-info">
+
+                    🕐 ${courseTime(course)}
+
+                    <br>
+
+                    📍 ${escapeHTML(
+                        course.location
+                    )}
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+
+    );
 
 }
-
 
 
 /* =====================================================
-   编辑课表
+   编辑星期按钮
    ===================================================== */
 
-let editDay = 0;
+function renderEditDays() {
 
+    const container =
+        document.getElementById(
+            "editDayButtons"
+        );
 
-
-function openEditor() {
-
-
-    document.getElementById(
-        "editorModal"
-    ).style.display = "block";
-
-
-    const jsDay =
-        new Date().getDay();
-
-
-    editDay =
-        (jsDay + 6) % 7;
-
-
-    createEditDayButtons();
-
-    renderEditor();
-
-}
-
-
-
-function createEditDayButtons() {
-
-
-    let html = "";
+    container.innerHTML = "";
 
 
     dayNames.forEach(
 
-        (name, index) => {
+        (dayName, index) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "day-button";
 
 
-            html += `
+            if (
+                index === selectedEditDay
+            ) {
 
-                <button
+                button.classList.add(
+                    "active"
+                );
 
-                    class="
-                        day-button
-                        ${index === editDay
-                            ? "active"
-                            : ""}
-                    "
+            }
 
-                    onclick="
-                        selectEditDay(
-                            ${index}
-                        )
-                    ">
 
-                    ${name.replace(
-                        "星期",
-                        ""
-                    )}
+            button.textContent =
+                dayName;
 
-                </button>
 
-            `;
+            button.onclick = function() {
+
+                selectedEditDay =
+                    index;
+
+                renderEditDays();
+
+            };
+
+
+            container.appendChild(
+                button
+            );
 
         }
 
     );
 
 
-    document.getElementById(
-        "editDayButtons"
-    ).innerHTML = html;
-
-}
-
-
-
-function selectEditDay(day) {
-
-
-    editDay = day;
-
-
-    createEditDayButtons();
-
     renderEditor();
 
 }
 
 
-
 /* =====================================================
-   显示编辑器
+   编辑器
    ===================================================== */
 
 function renderEditor() {
 
+    const container =
+        document.getElementById(
+            "editor"
+        );
+
 
     const courses =
-        schedule[editDay];
+        schedule[selectedEditDay] || [];
 
 
-    let html = "";
+    container.innerHTML = "";
 
 
     if (
         courses.length === 0
     ) {
 
-
-        html += `
+        container.innerHTML = `
 
             <div class="no-course">
-
-                📭 这一天目前没有课程
-
+                今天没有课程
             </div>
 
         `;
+
+        return;
 
     }
 
@@ -2030,247 +1900,177 @@ function renderEditor() {
 
         (course, index) => {
 
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-            html += `
 
-                <div
-                    class="editor-course">
+            div.className =
+                "editor-course";
 
 
-                    <div
-                        class="editor-title">
+            div.innerHTML = `
 
-                        第 ${index + 1} 堂课
+                <div class="editor-title">
 
-                    </div>
-
-
-
-                    <!-- 课程名称 -->
-
-                    <div
-                        class="input-group">
-
-                        <label>
-                            课程名称
-                        </label>
-
-
-                        <input
-
-                            type="text"
-
-                            value="${escapeHTML(
-                                course.subject
-                            )}"
-
-                            onchange="
-                                updateSubject(
-                                    ${index},
-                                    this.value
-                                )
-                            "
-
-                        >
-
-                    </div>
-
-
-
-                    <!-- 地点 -->
-
-                    <div
-                        class="input-group">
-
-                        <label>
-                            地点
-                        </label>
-
-
-                        <input
-
-                            type="text"
-
-                            value="${escapeHTML(
-                                course.location
-                            )}"
-
-                            onchange="
-                                updateLocation(
-                                    ${index},
-                                    this.value
-                                )
-                            "
-
-                        >
-
-                    </div>
-
-
-
-                    <!-- 时间 -->
-
-                    <div
-                        class="time-row">
-
-
-                        <div
-                            class="input-group">
-
-                            <label>
-                                开始
-                            </label>
-
-
-                            <input
-
-                                type="time"
-
-                                value="${clockTime(
-                                    course.start
-                                )}"
-
-                                onchange="
-                                    updateStart(
-                                        ${index},
-                                        this.value
-                                    )
-                                "
-
-                            >
-
-                        </div>
-
-
-
-                        <div
-                            class="input-group">
-
-                            <label>
-                                结束
-                            </label>
-
-
-                            <input
-
-                                type="time"
-
-                                value="${clockTime(
-                                    course.end
-                                )}"
-
-                                onchange="
-                                    updateEnd(
-                                        ${index},
-                                        this.value
-                                    )
-                                "
-
-                            >
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- 删除 -->
-
-                    <button
-
-                        class="delete-button"
-
-                        onclick="
-                            deleteCourse(
-                                ${index}
-                            )
-                        ">
-
-                        🗑️ 删除这堂课
-
-                    </button>
-
+                    课程 ${index + 1}
 
                 </div>
 
+
+                <div class="input-group">
+
+                    <label>
+                        科目
+                    </label>
+
+                    <input
+                        type="text"
+                        value="${escapeHTML(
+                            course.subject
+                        )}"
+                        onchange="
+                            updateSubject(
+                                ${index},
+                                this.value
+                            )
+                        "
+                    >
+
+                </div>
+
+
+                <div class="time-row">
+
+                    <div class="input-group">
+
+                        <label>
+                            开始
+                        </label>
+
+                        <input
+                            type="time"
+                            value="${clockTime(
+                                course.start
+                            )}"
+                            onchange="
+                                updateStart(
+                                    ${index},
+                                    this.value
+                                )
+                            "
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            结束
+                        </label>
+
+                        <input
+                            type="time"
+                            value="${clockTime(
+                                course.end
+                            )}"
+                            onchange="
+                                updateEnd(
+                                    ${index},
+                                    this.value
+                                )
+                            "
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        地点
+                    </label>
+
+                    <input
+                        type="text"
+                        value="${escapeHTML(
+                            course.location
+                        )}"
+                        onchange="
+                            updateLocation(
+                                ${index},
+                                this.value
+                            )
+                        "
+                    >
+
+                </div>
+
+
+                <button
+                    class="delete-button"
+                    onclick="
+                        deleteCourse(
+                            ${index}
+                        )
+                    ">
+
+                    🗑️ 删除课程
+
+                </button>
+
             `;
+
+
+            container.appendChild(
+                div
+            );
 
         }
 
     );
 
-
-    document.getElementById(
-        "editor"
-    ).innerHTML = html;
-
 }
 
 
-
 /* =====================================================
-   修改课程名称
+   修改课程
    ===================================================== */
 
-function updateSubject(
-    index,
-    value
-) {
+function updateSubject(index, value) {
 
-    schedule[editDay][index].subject =
+    schedule[selectedEditDay][index].subject =
         value;
 
 }
 
 
+function updateLocation(index, value) {
 
-/* =====================================================
-   修改地点
-   ===================================================== */
-
-function updateLocation(
-    index,
-    value
-) {
-
-    schedule[editDay][index].location =
+    schedule[selectedEditDay][index].location =
         value;
 
 }
 
 
+function updateStart(index, value) {
 
-/* =====================================================
-   修改开始时间
-   ===================================================== */
-
-function updateStart(
-    index,
-    value
-) {
-
-    schedule[editDay][index].start =
+    schedule[selectedEditDay][index].start =
         timeToMinutes(value);
 
 }
 
 
+function updateEnd(index, value) {
 
-/* =====================================================
-   修改结束时间
-   ===================================================== */
-
-function updateEnd(
-    index,
-    value
-) {
-
-    schedule[editDay][index].end =
+    schedule[selectedEditDay][index].end =
         timeToMinutes(value);
 
 }
-
 
 
 /* =====================================================
@@ -2279,8 +2079,7 @@ function updateEnd(
 
 function addCourse() {
 
-
-    schedule[editDay].push({
+    schedule[selectedEditDay].push({
 
         start: 480,
 
@@ -2293,22 +2092,9 @@ function addCourse() {
     });
 
 
-    /*
-       按开始时间排序
-    */
-
-    schedule[editDay].sort(
-
-        (a, b) =>
-            a.start - b.start
-
-    );
-
-
     renderEditor();
 
 }
-
 
 
 /* =====================================================
@@ -2317,70 +2103,48 @@ function addCourse() {
 
 function deleteCourse(index) {
 
-
-    if (
-        !confirm(
-            "确定要删除这堂课吗？"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    schedule[editDay].splice(
-
+    schedule[selectedEditDay].splice(
         index,
-
         1
-
     );
-
 
     renderEditor();
 
 }
 
 
-
 /* =====================================================
-   保存课表
+   保存修改
    ===================================================== */
 
 function saveSchedule() {
 
-
-    localStorage.setItem(
-
-        "myTimetable",
-
-        JSON.stringify(schedule)
-
-    );
-
+    savePersonalSchedule();
 
     update();
 
+    renderFullTimetable();
 
     alert(
-        "✅ 课表已经保存！"
+        "✅ " +
+        currentClass +
+        " 课表已保存"
     );
 
 }
 
 
-
 /* =====================================================
-   清空课表
+   恢复默认 JSON 课表
    ===================================================== */
 
-function resetSchedule() {
-
+async function resetSchedule() {
 
     if (
         !confirm(
-            "确定要清空自己的全部课表吗？"
+            "确定要恢复 " +
+            currentClass +
+            " 的默认课表吗？"
         )
     ) {
 
@@ -2389,40 +2153,136 @@ function resetSchedule() {
     }
 
 
-    schedule =
-        JSON.parse(
+    try {
 
-            JSON.stringify(
-                defaultSchedule
-            )
+        const classInfo =
+            classList.find(
+
+                item =>
+                    item.name === currentClass
+
+            );
+
+
+        const response =
+            await fetch(
+                classInfo.file
+            );
+
+
+        const data =
+            await response.json();
+
+
+        schedule =
+            copySchedule(data);
+
+
+        localStorage.removeItem(
+
+            "myTimetable_" +
+            currentClass
 
         );
 
 
-    localStorage.removeItem(
-        "myTimetable"
-    );
+        update();
+
+        renderEditor();
+
+        renderFullTimetable();
 
 
-    renderEditor();
+        alert(
+            "✅ 已恢复默认课表"
+        );
 
-    update();
+    }
 
+    catch {
 
-    alert(
-        "✅ 已经恢复为空白课表！"
-    );
+        alert(
+            "❌ 无法读取默认课表"
+        );
+
+    }
 
 }
 
 
-
 /* =====================================================
-   第一次运行
+   打开完整课表
    ===================================================== */
 
-update();
+function openTimetable() {
 
+    document.getElementById(
+        "timetableModal"
+    ).style.display =
+        "block";
+
+
+    renderViewDays();
+
+}
+
+
+/* =====================================================
+   打开编辑器
+   ===================================================== */
+
+function openEditor() {
+
+    document.getElementById(
+        "editorModal"
+    ).style.display =
+        "block";
+
+
+    renderEditDays();
+
+}
+
+
+/* =====================================================
+   关闭弹窗
+   ===================================================== */
+
+function closeModal(id) {
+
+    document.getElementById(
+        id
+    ).style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   点击背景关闭
+   ===================================================== */
+
+window.onclick = function(event) {
+
+    if (
+        event.target.classList.contains(
+            "modal"
+        )
+    ) {
+
+        event.target.style.display =
+            "none";
+
+    }
+
+};
+
+
+/* =====================================================
+   启动
+   ===================================================== */
+
+loadClasses();
 
 
 /* =====================================================
@@ -2438,7 +2298,6 @@ setInterval(
 );
 
 </script>
-
 
 </body>
 
