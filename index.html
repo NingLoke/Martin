@@ -61,18 +61,18 @@ h1 {
 .class-selector {
     position: absolute !important;
     top: 20px;
-    right: 20px;
-    width: 90px;
+    right: 25px;
+    width: 70px;
     margin: 0 !important;
 }
-
 .class-selector label {
     display: none;
 }
 
 .class-select {
-    width: 100%;
-    padding: 7px 5px;
+    width: 70px;
+    height: 34px;
+    padding: 5px;
     border: 1px solid #ddd;
     border-radius: 9px;
     background: white;
@@ -121,22 +121,25 @@ h1 {
 /* 按钮 */
 
 .buttons {
+    position: absolute;
+    top: 20px;
+    right: 105px;
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 5px;
+    margin: 0;
 }
 
 .main-button {
-    flex: 1;
     border: none;
-    border-radius: 12px;
-    padding: 13px 10px;
+    border-radius: 9px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
     background: #f1f3f5;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
+    white-space: nowrap;
 }
-
 .main-button:active {
     transform: scale(0.97);
 }
