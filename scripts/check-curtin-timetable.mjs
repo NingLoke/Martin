@@ -75,6 +75,8 @@ try {
   const page = await browser.newPage();
   await openListReport(page);
 
+  let changed = false;
+
   for (const group of TARGETS) {
     const timetable = Object.fromEntries([...Array(7).keys()].map((day) => [String(day), []]));
     for (const event of await collect(page, group)) {
@@ -91,10 +93,19 @@ try {
     const current = JSON.parse(await readFile(filename, "utf8"));
     if (canonical(current) !== canonical(timetable)) {
       await writeFile(filename, `${JSON.stringify(timetable, null, 2)}\n`);
+      changed = true;
       console.log(`Updated ${filename}`);
     } else {
       console.log(`No schedule change in ${filename}`);
     }
+  }
+
+  if (changed) {
+    await writeFile(
+      path.join("关注塔菲喵", "last-updated.json"),
+      `${JSON.stringify({ updatedAt: new Date().toISOString() }, null, 2)}\n`
+    );
+    console.log("Updated timetable timestamp");
   }
 } finally {
   await browser.close();
