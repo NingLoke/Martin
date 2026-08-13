@@ -1,9 +1,55 @@
 {
-  "0": [],
-  "1": [],
+  "0": [
+    {
+      "start": 600,
+      "end": 720,
+      "subject": "Math 2 (lecture)",
+      "location": "SK3 104 Lecture 3"
+    },
+    {
+      "start": 900,
+      "end": 1020,
+      "subject": "Math 2 (tutorial)",
+      "location": "PA3 205"
+    }
+  ],
+  "1": [
+    {
+      "start": 600,
+      "end": 720,
+      "subject": "Math 2 (lecture)",
+      "location": "SK3 103 Lecture 2"
+    },
+    {
+      "start": 720,
+      "end": 840,
+      "subject": "Math 2 (tutorial)",
+      "location": "SK3 104 Lecture 3"
+    }
+  ],
   "2": [],
-  "3": [],
-  "4": [],
+  "3": [
+    {
+      "start": 480,
+      "end": 660,
+      "subject": "ECS (seminar)",
+      "location": "PA3 206"
+    }
+  ],
+  "4": [
+    {
+      "start": 480,
+      "end": 660,
+      "subject": "ECS (seminar)",
+      "location": "SK3 102 Lecture 1"
+    },
+    {
+      "start": 480,
+      "end": 600,
+      "subject": "Math 2 (tutorial)",
+      "location": "PA3 205"
+    }
+  ],
   "5": [],
   "6": []
 }
