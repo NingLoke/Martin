@@ -21,7 +21,7 @@ jobs:
 
       - name: Install browser
         run: |
-          npm install --no-save playwright@1.55.0
+          npm install --no-save --package-lock=false playwright@1.55.0
           npx playwright install --with-deps chromium
 
       - name: Check Curtin timetable
