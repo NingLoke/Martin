@@ -37,8 +37,11 @@ jobs:
             echo "found=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Remove temporary dependencies
+        run: rm -rf node_modules
+
       - name: Create timetable change pull request
-        if: steps.changes.outputs.found == 'true'
+        if: ${{ false }}
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
