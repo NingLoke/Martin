@@ -1,0 +1,52 @@
+name: Curtin timetable check
+
+on:
+  schedule:
+    - cron: "17 23 * * *" # 07:17 Malaysia time (UTC+8)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install browser
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Check Curtin timetable
+        run: node scripts/check-curtin-timetable.mjs
+
+      - name: Detect changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- "关注塔菲喵/1E1.json" "关注塔菲喵/1E8.json"; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create timetable change pull request
+        if: steps.changes.outputs.found == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/curtin-timetable-update
+          delete-branch: true
+          title: "Update Curtin timetables"
+          commit-message: "Update Curtin timetables"
+          body: |
+            Automated timetable check detected changes in 1E1 or 1E8.
+            Please review the official Curtin timetable before merging.
+          labels: timetable, automated
