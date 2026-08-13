@@ -112,7 +112,12 @@ async function collect(page, name, selections) {
       location: cells[9],
     }));
 
-  if (events.length === 0) throw new Error(`List report format was not recognised for ${name}; refusing to update data.`);
+  if (events.length === 0) {
+    const unitCodes = selections.map(({ unit }) => unit);
+    const candidates = rows.filter((cells) => unitCodes.some((unit) => cells[2].includes(unit)));
+    console.log(`Candidate rows for ${name}: ${JSON.stringify(candidates)}`);
+    throw new Error(`List report format was not recognised for ${name}; refusing to update data.`);
+  }
   return events;
 }
 
