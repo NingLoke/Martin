@@ -100,13 +100,11 @@ try {
     }
   }
 
-  if (changed) {
-    await writeFile(
-      path.join("关注塔菲喵", "last-updated.json"),
-      `${JSON.stringify({ updatedAt: new Date().toISOString() }, null, 2)}\n`
-    );
-    console.log("Updated timetable timestamp");
-  }
+  await writeFile(
+    path.join("关注塔菲喵", "last-updated.json"),
+    `${JSON.stringify({ updatedAt: new Date().toISOString() }, null, 2)}\n`
+  );
+  console.log(changed ? "Updated timetable and check timestamp" : "Updated check timestamp; timetable unchanged");
 } finally {
   await browser.close();
 }
