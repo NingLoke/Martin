@@ -47,6 +47,20 @@ h1 {
     margin-bottom: 8px;
 }
 
+.time-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.last-updated {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
 .status {
     font-size: 26px;
     font-weight: bold;
@@ -382,9 +396,17 @@ h1 {
     id="date">
 </div>
 
-<div
-    class="time"
-    id="clock">
+<div class="time-line">
+    <div
+        class="time"
+        id="clock">
+    </div>
+
+    <div
+        class="last-updated"
+        id="lastUpdated">
+        课表上次更新：读取中...
+    </div>
 </div>
 
 <div
@@ -2283,10 +2305,71 @@ window.onclick = function(event) {
 
 
 /* =====================================================
+   课表上次更新时间
+   ===================================================== */
+
+async function loadLastUpdated() {
+
+    const element =
+        document.getElementById(
+            "lastUpdated"
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                "/Martin/关注塔菲喵/last-updated.json",
+                { cache: "no-store" }
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "无法读取更新时间"
+            );
+        }
+
+        const data =
+            await response.json();
+
+        const updatedAt =
+            new Date(data.updatedAt);
+
+        element.textContent =
+            "课表上次更新：" +
+            updatedAt.toLocaleString(
+                "zh-CN",
+                {
+                    timeZone: "Asia/Kuala_Lumpur",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
+                }
+            );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        element.textContent =
+            "课表上次更新：暂无记录";
+
+    }
+
+}
+
+
+/* =====================================================
    启动
    ===================================================== */
 
 loadClasses();
+
+loadLastUpdated();
 
 
 /* =====================================================
