@@ -53,7 +53,7 @@ async function openListReport(page) {
 
 async function collect(page, group) {
   const rows = await page.locator("tr").evaluateAll((elements) => elements.map((row) =>
-    [...row.cells].map((cell) => normalise(cell.textContent || ""))
+    [...row.cells].map((cell) => (cell.textContent || "").replace(/\s+/g, " ").trim())
   ).filter((cells) => cells.length === 11));
 
   const events = rows
