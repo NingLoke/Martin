@@ -5,9 +5,6 @@ import path from "node:path";
 const SCHOOL = "School of Pre-U and Continues Studies";
 const UNITS = ["CMFP0050 Physics 1", "CMFP0060 Information & Communication Technology"];
 const TARGETS = ["1E1", "1E8"];
-const DAY_INDEX = new Map([
-  ["MONDAY", 0], ["TUESDAY", 1], ["WEDNESDAY", 2], ["THURSDAY", 3], ["FRIDAY", 4],
-]);
 
 const normalise = (value) => value.replace(/\s+/g, " ").trim();
 const minutes = (time) => {
@@ -15,19 +12,31 @@ const minutes = (time) => {
   if (!match) throw new Error(`Missing time: ${time}`);
   return Number(match[1]) * 60 + Number(match[2]);
 };
-const locationFor = (value) => normalise(value)
-  .replace(/^PA3\s+(\d+)$/, "PA3-$1")
-  .replace(/^SK3 102 Lecture 1$/, "SK3 102 (Lecture1)")
-  .replace(/^LTCL 10/, "LTCL10")
-  .replace(/^SK2 101 \(ME 101\)/, "SK2 101 (ME101)");
-const subjectFor = (text) => {
-  const unit = text.includes("CMFP0060") ? "ICT" : "Physics";
-  const type = text.includes("Laboratory") ? "lab" : text.includes("Tutorial") ? "tutorial" : "lecture";
-  return `${unit} (${type})`;
+const dayFor = (date) => {
+  const match = date.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2})$/);
+  if (!match) throw new Error(`Unrecognised Curtin date: ${date}`);
+  const dayOfWeek = new Date(Date.UTC(2000 + Number(match[3]), Number(match[2]) - 1, Number(match[1]))).getUTCDay();
+  return dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 };
-const groupMatches = (text, group) =>
-  new RegExp(`(^|[^A-Z0-9])${group}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`).test(text) ||
-  text.includes("1E1-8");
+const subjectFor = (description, type) =>
+  `${description.includes("CMFP0060") ? "ICT" : "Physics"} (${type === "Laboratory" ? "lab" : type.toLowerCase()})`;
+const groupMatches = (value, group) =>
+  new RegExp(`(^|[^A-Z0-9])${group}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`, "i").test(value) ||
+  value.includes("1E1-8");
+const canonical = (timetable) => JSON.stringify(Object.fromEntries(Object.entries(timetable).map(([day, events]) => [
+  day,
+  events.map((event) => ({
+    ...event,
+    subject: event.subject.toLowerCase(),
+    location: normalise(event.location)
+      .replace(/-/g, " ")
+      .replace(/\(Computer Lab\)|Physic Lab/gi, "")
+      .replace(/ME\s*101/gi, "ME101")
+      .replace(/Lecture\s*1/gi, "Lecture1")
+      .replace(/LTCL\s*10/gi, "LTCL10")
+      .toLowerCase(),
+  })),
+])));
 
 async function openListReport(page) {
   await page.goto("http://sws.curtin.edu.my/login.aspx", { waitUntil: "domcontentloaded", timeout: 60_000 });
@@ -44,26 +53,18 @@ async function openListReport(page) {
 
 async function collect(page, group) {
   const rows = await page.locator("tr").evaluateAll((elements) => elements.map((row) =>
-    [...row.cells].map((cell) => (cell.textContent || "").replace(/\s+/g, " ").trim())
-  ).filter((cells) => cells.length > 1));
-  console.log(`List rows: ${JSON.stringify(rows)}`);
+    [...row.cells].map((cell) => normalise(cell.textContent || ""))
+  ).filter((cells) => cells.length === 11));
 
-  const events = [];
-  for (const cells of rows) {
-    const joined = normalise(cells.join(" "));
-    if (!groupMatches(joined, group) || !/CMFP00(?:50|60)/.test(joined)) continue;
-    const day = [...DAY_INDEX.keys()].find((name) => new RegExp(`\\b${name}\\b`, "i").test(joined));
-    const times = [...joined.matchAll(/\b\d{1,2}:\d{2}\b/g)].map((match) => match[0]);
-    const location = cells.find((cell) => /^(PA3|SK2|SK3|LTCL|Harry Perkins|Auditorium)/i.test(normalise(cell)));
-    if (!day || times.length < 2 || !location) continue;
-    events.push({
-      day: DAY_INDEX.get(day),
-      start: minutes(times[0]),
-      end: minutes(times[1]),
-      subject: subjectFor(joined),
-      location: locationFor(location),
-    });
-  }
+  const events = rows
+    .filter((cells) => groupMatches(cells[1], group) && /CMFP00(?:50|60)/.test(cells[2]))
+    .map((cells) => ({
+      day: dayFor(cells[4]),
+      start: minutes(cells[5]),
+      end: minutes(cells[6]),
+      subject: subjectFor(cells[2], cells[3]),
+      location: cells[9],
+    }));
 
   if (events.length === 0) throw new Error(`List report format was not recognised for ${group}; refusing to update data.`);
   return events;
@@ -88,11 +89,11 @@ try {
     console.log(`Calculated ${group}: ${JSON.stringify(timetable)}`);
     const filename = path.join("关注塔菲喵", `${group}.json`);
     const current = JSON.parse(await readFile(filename, "utf8"));
-    if (JSON.stringify(current) !== JSON.stringify(timetable)) {
+    if (canonical(current) !== canonical(timetable)) {
       await writeFile(filename, `${JSON.stringify(timetable, null, 2)}\n`);
       console.log(`Updated ${filename}`);
     } else {
-      console.log(`No change in ${filename}`);
+      console.log(`No schedule change in ${filename}`);
     }
   }
 } finally {
