@@ -405,7 +405,7 @@ h1 {
     <div
         class="last-updated"
         id="lastUpdated">
-        课表上次更新：读取中...
+        课表每日同步两次：上次更新时间读取中...
     </div>
 </div>
 
@@ -2336,7 +2336,7 @@ async function loadLastUpdated() {
             new Date(data.updatedAt);
 
         element.textContent =
-            "课表上次更新：" +
+            "课表每日同步两次：上次更新时间 " +
             updatedAt.toLocaleString(
                 "zh-CN",
                 {
@@ -2356,7 +2356,7 @@ async function loadLastUpdated() {
         console.error(error);
 
         element.textContent =
-            "课表上次更新：暂无记录";
+            "课表每日同步两次：上次更新时间暂无记录";
 
     }
 
