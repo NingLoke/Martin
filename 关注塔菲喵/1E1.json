@@ -3,64 +3,64 @@
     {
       "start": 720,
       "end": 840,
-      "subject": "Physics (lecture)",
-      "location": "Harry Perkins LT"
+      "subject": "Physics 1111111111111111111111111111111(lecture)",
+      "location": "Harry P111111111111111111111111111111erkins LT"
     },
     {
       "start": 930,
       "end": 1020,
-      "subject": "ICT (lecture)",
-      "location": "Auditorium"
+      "subject": "ICT 111111111111111111111(lecture)",
+      "location": "Aud11111111111111111111111itorium"
     }
   ],
   "1": [
     {
       "start": 480,
       "end": 600,
-      "subject": "ICT (lab)",
-      "location": "PA3 103 (Computer Lab)"
+      "subject": "ICT (11111111111111111111111lab)",
+      "location": "PA3 1111111111111111111111111103 (Computer Lab)"
     },
     {
       "start": 780,
       "end": 870,
-      "subject": "ICT (lecture)",
-      "location": "Auditorium"
+      "subject": "ICT (l11111111111111111111111ecture)",
+      "location": "Au11111111111111111111111ditorium"
     }
   ],
   "2": [
     {
       "start": 480,
       "end": 600,
-      "subject": "Physics (tutorial)",
-      "location": "LTCL 10 (HL2-110)"
+      "subject": "Phys11111111111111111ics (tutorial)",
+      "location": "LTC111111111111111111L 10 (HL2-110)"
     },
     {
       "start": 600,
       "end": 720,
-      "subject": "Physics (lab)",
-      "location": "SK2 101 (ME 101) Physic Lab"
+      "subject": "Phy1111111111111111111111111111111111111sics (lab)",
+      "location": "S11111111111111111111111K2 101 (ME 101) Physic Lab"
     }
   ],
   "3": [
     {
       "start": 480,
       "end": 600,
-      "subject": "Physics (lecture)",
-      "location": "SK3 102 Lecture 1"
+      "subject": "Ph11111111111111111111ysics (lecture)",
+      "location": "SK3 102 1111111111111111111111Lecture 1"
     },
     {
       "start": 900,
       "end": 1020,
-      "subject": "Physics (tutorial)",
-      "location": "PA3 207"
+      "subject": "Physics (tutori111111111111al)",
+      "location": "PA3 207a1111111111111111111111111122"
     }
   ],
   "4": [
     {
       "start": 900,
       "end": 1020,
-      "subject": "ICT (lab)",
-      "location": "PA3 103 (Computer Lab)"
+      "subject": "ICT (l11111111111111111111111111ab)",
+      "location": "PA3 10111111111111111111111111111113 (Computer Lab)"
     }
   ],
   "5": [],
