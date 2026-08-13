@@ -55,10 +55,21 @@ h1 {
     flex-wrap: wrap;
 }
 
+.time-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.time-stack .time {
+    margin-bottom: 0;
+}
+
 .last-updated {
     color: #888;
     font-size: 12px;
     margin-bottom: 8px;
+    text-align: right;
 }
 
 .status {
@@ -391,21 +402,24 @@ h1 {
     </div>
 
     <h1>📖 My Timetable</h1>
-    <div
-    class="time"
-    id="date">
-</div>
-
 <div class="time-line">
-    <div
-        class="time"
-        id="clock">
+    <div class="time-stack">
+        <div
+            class="time"
+            id="date">
+        </div>
+
+        <div
+            class="time"
+            id="clock">
+        </div>
     </div>
 
-    <div
-        class="last-updated"
-        id="lastUpdated">
-        课表每日同步两次：上次更新时间读取中...
+    <div class="last-updated time-stack">
+        <div>课表每日同步两次</div>
+        <div id="lastUpdated">
+            上次更新时间读取中...
+        </div>
     </div>
 </div>
 
@@ -2336,7 +2350,7 @@ async function loadLastUpdated() {
             new Date(data.updatedAt);
 
         element.textContent =
-            "课表每日同步两次：上次更新时间 " +
+            "上次更新时间 " +
             updatedAt.toLocaleString(
                 "zh-CN",
                 {
@@ -2345,6 +2359,7 @@ async function loadLastUpdated() {
                     day: "2-digit",
                     hour: "2-digit",
                     minute: "2-digit",
+                    second: "2-digit",
                     hour12: false
                 }
             );
@@ -2356,7 +2371,7 @@ async function loadLastUpdated() {
         console.error(error);
 
         element.textContent =
-            "课表每日同步两次：上次更新时间暂无记录";
+            "上次更新时间暂无记录";
 
     }
 
