@@ -3,7 +3,9 @@ name: Curtin timetable check
 on:
   schedule:
     - cron: "17 22 * * *" # 06:17 Malaysia time (UTC+8)
+    - cron: "23 22 * * *" # 06:23 Malaysia time (UTC+8) backup
     - cron: "17 10 * * *" # 18:17 Malaysia time (UTC+8)
+    - cron: "23 10 * * *" # 18:23 Malaysia time (UTC+8) backup
   workflow_dispatch:
   push:
     branches:
