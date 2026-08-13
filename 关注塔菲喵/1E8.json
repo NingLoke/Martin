@@ -3,64 +3,64 @@
     {
       "start": 480,
       "end": 600,
-      "subject": "ICT (lab)",
+      "subject": "ICT11111111 (lab)",
       "location": "PA3 106 (Computer Lab)"
     },
     {
       "start": 720,
       "end": 840,
-      "subject": "Physics (lecture)",
-      "location": "Harry Perkins LT"
+      "subject": "Physics 11111111(lecture)",
+      "location": "Harry11111111111111111 Perkins LT"
     },
     {
       "start": 930,
       "end": 1020,
-      "subject": "ICT (lecture)",
-      "location": "Auditorium"
+      "subject": "ICT 111111111111111111111(lecture)",
+      "location": "Auditori11111111111111111111111um"
     }
   ],
   "1": [
     {
       "start": 600,
       "end": 720,
-      "subject": "Physics (tutorial)",
-      "location": "PA3 206"
+      "subject": "Physics 111111111111(tutorial)",
+      "location": "PA3 21111111111111111111111111111106"
     },
     {
       "start": 780,
       "end": 870,
-      "subject": "ICT (lecture)",
-      "location": "Auditorium"
+      "subject": "ICT (lec111111111111111111111111111111111ture)",
+      "location": "Auditoriu11111111111111111111111111111m"
     }
   ],
   "2": [
     {
       "start": 480,
       "end": 600,
-      "subject": "Physics (lab)",
-      "location": "SK2 101 (ME 101) Physic Lab"
+      "subject": "Physics 1111111111111111111111111111(lab)",
+      "location": "SK2 101 (ME1111111111111111111 101) Physic Lab"
     }
   ],
   "3": [
     {
       "start": 480,
       "end": 600,
-      "subject": "Physics (lecture)",
-      "location": "SK3 102 Lecture 1"
+      "subject": "Physics (lec1111111111111111111111111111111111111111111ture)",
+      "location": "SK3 102 L1111111111111111111111111ecture 1"
     },
     {
       "start": 660,
       "end": 780,
-      "subject": "ICT (lab)",
-      "location": "PA3 108 (Computer Lab)"
+      "subject": "ICT (11111111111111111111111lab)",
+      "location": "PA11111111111111111113 108 (Computer Lab)"
     }
   ],
   "4": [
     {
       "start": 840,
       "end": 960,
-      "subject": "Physics (tutorial)",
-      "location": "LTCL 10 (HL2-110)"
+      "subject": "Phy11111111111111111111sics (tutorial)",
+      "location": "LTCL 1111111111111111111111110 (HL2-110)"
     }
   ],
   "5": [],
