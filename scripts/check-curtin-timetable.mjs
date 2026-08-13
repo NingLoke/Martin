@@ -74,6 +74,8 @@ async function openListReport(page) {
   await page.getByRole("button", { name: "Student - Click here", exact: true }).click();
   await page.getByRole("link", { name: "Units", exact: true }).click();
   await page.locator("select[name=dlFilter]").selectOption({ label: SCHOOL });
+  await page.waitForTimeout(1_000);
+  await page.waitForLoadState("domcontentloaded");
   const unitSelect = page.locator("select[name=dlObject]");
   const options = await unitSelect.locator("option").evaluateAll((elements) => elements.map((option) => ({
     label: (option.textContent || "").replace(/\s+/g, " ").trim(),
