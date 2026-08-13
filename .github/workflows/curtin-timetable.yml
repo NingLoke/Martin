@@ -2,6 +2,7 @@ name: Curtin timetable check
 
 on:
   schedule:
+    - cron: "25 8 * * *" # 16:25 Malaysia time (UTC+8), temporary verification
     - cron: "0 23 * * *" # 07:00 Malaysia time (UTC+8)
     - cron: "50 7 * * *" # 15:50 Malaysia time (UTC+8)
   workflow_dispatch:
