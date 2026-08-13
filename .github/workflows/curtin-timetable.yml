@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   check:
@@ -41,16 +40,12 @@ jobs:
       - name: Remove temporary dependencies
         run: rm -rf node_modules
 
-      - name: Create timetable change pull request
+      - name: Publish timetable changes
         if: steps.changes.outputs.found == 'true'
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: automation/curtin-timetable-update
-          delete-branch: true
-          title: "Update Curtin timetables"
-          commit-message: "Update Curtin timetables"
-          body: |
-            Automated timetable check detected changes in 1E1 or 1E8.
-            Please review the official Curtin timetable before merging.
-          labels: timetable, automated
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "关注塔菲喵/1E1.json" "关注塔菲喵/1E8.json"
+          git commit -m "Update Curtin timetables"
+          git push origin HEAD:main
