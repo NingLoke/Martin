@@ -74,7 +74,18 @@ async function openListReport(page) {
   await page.getByRole("button", { name: "Student - Click here", exact: true }).click();
   await page.getByRole("link", { name: "Units", exact: true }).click();
   await page.locator("select[name=dlFilter]").selectOption({ label: SCHOOL });
-  await page.locator("select[name=dlObject]").selectOption(UNITS.map((label) => ({ label })));
+  const unitSelect = page.locator("select[name=dlObject]");
+  const options = await unitSelect.locator("option").evaluateAll((elements) => elements.map((option) => ({
+    label: (option.textContent || "").replace(/\s+/g, " ").trim(),
+    value: option.value,
+  })));
+  const selectedValues = UNITS.map((label) => {
+    const unitCode = label.split(" ")[0];
+    const match = options.find((option) => option.label.includes(unitCode));
+    if (!match) throw new Error(`Curtin unit ${unitCode} was not found in the Units list.`);
+    return match.value;
+  });
+  await unitSelect.selectOption(selectedValues);
   await page.locator("select[name=lbWeeks]").selectOption("29-43");
   await page.locator("select[name=lbDays]").selectOption("1-5");
   await page.locator("select[name=dlType]").selectOption({ label: "List" });
