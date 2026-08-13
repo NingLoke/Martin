@@ -3,35 +3,33 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const SCHOOL = "School of Pre-U and Continues Studies";
-const UNITS = [
-  "CMFP0050 Physics 1",
-  "CMFP0060 Information & Communication Technology",
-];
+const UNITS = ["CMFP0050 Physics 1", "CMFP0060 Information & Communication Technology"];
 const TARGETS = ["1E1", "1E8"];
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-const LOCATION_MAP = new Map([
-  ["PA3 103", "PA3 103 (Computer Lab)"],
-  ["PA3 106", "PA3-106"],
-  ["PA3 108", "PA3-108"],
-  ["PA3 206", "PA3-206"],
-  ["PA3 207", "PA3-207"],
-  ["SK2 101 (ME 101) Physic Lab", "SK2 101 (ME101) Physic Lab"],
-  ["SK3 102 Lecture 1", "SK3 102 (Lecture1)"],
-  ["LTCL 10 (HL2-110)", "LTCL10 (HL2-110)"],
+const DAY_INDEX = new Map([
+  ["MONDAY", 0], ["TUESDAY", 1], ["WEDNESDAY", 2], ["THURSDAY", 3], ["FRIDAY", 4],
 ]);
 
 const normalise = (value) => value.replace(/\s+/g, " ").trim();
-const locationFor = (value) => {
-  const key = normalise(value).replace(/\s+\(Computer Lab\)$/, "");
-  return LOCATION_MAP.get(key) ?? key;
+const minutes = (time) => {
+  const match = time.match(/(\d{1,2}):(\d{2})/);
+  if (!match) throw new Error(`Missing time: ${time}`);
+  return Number(match[1]) * 60 + Number(match[2]);
 };
+const locationFor = (value) => normalise(value)
+  .replace(/^PA3\s+(\d+)$/, "PA3-$1")
+  .replace(/^SK3 102 Lecture 1$/, "SK3 102 (Lecture1)")
+  .replace(/^LTCL 10/, "LTCL10")
+  .replace(/^SK2 101 \(ME 101\)/, "SK2 101 (ME101)");
 const subjectFor = (text) => {
   const unit = text.includes("CMFP0060") ? "ICT" : "Physics";
   const type = text.includes("Laboratory") ? "lab" : text.includes("Tutorial") ? "tutorial" : "lecture";
   return `${unit} (${type})`;
 };
+const groupMatches = (text, group) =>
+  new RegExp(`(^|[^A-Z0-9])${group}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`).test(text) ||
+  text.includes("1E1-8");
 
-async function openTimetable(page) {
+async function openListReport(page) {
   await page.goto("http://sws.curtin.edu.my/login.aspx", { waitUntil: "domcontentloaded", timeout: 60_000 });
   await page.getByRole("button", { name: "Student - Click here", exact: true }).click();
   await page.getByRole("link", { name: "Units", exact: true }).click();
@@ -39,78 +37,47 @@ async function openTimetable(page) {
   await page.locator("select[name=dlObject]").selectOption(UNITS.map((label) => ({ label })));
   await page.locator("select[name=lbWeeks]").selectOption("29-43");
   await page.locator("select[name=lbDays]").selectOption("1-5");
+  await page.locator("select[name=dlType]").selectOption({ label: "List" });
   await page.getByRole("button", { name: "View Timetable", exact: true }).click();
   await page.waitForTimeout(1_000);
 }
 
 async function collect(page, group) {
-  return page.evaluate(({ group, days }) => {
-    const norm = (value) => value.replace(/\s+/g, " ").trim();
-    const groupMatches = (value) =>
-      new RegExp(`(^|[^A-Z0-9])${group}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`).test(value) ||
-      value.includes("1E1-8");
+  const rows = await page.locator("tr").evaluateAll((elements) => elements.map((row) =>
+    [...row.cells].map((cell) => (cell.textContent || "").replace(/\s+/g, " ").trim())
+  ).filter((cells) => cells.length > 1));
 
-    const grids = [...document.querySelectorAll("table")].filter((table) => {
-      const firstRow = table.rows[0];
-      const header = firstRow ? [...firstRow.cells].map((cell) => norm(cell.textContent || "")) : [];
-      return days.every((day) => header.includes(day));
+  const events = [];
+  for (const cells of rows) {
+    const joined = normalise(cells.join(" "));
+    if (!groupMatches(joined, group) || !/CMFP00(?:50|60)/.test(joined)) continue;
+    const day = [...DAY_INDEX.keys()].find((name) => new RegExp(`\\b${name}\\b`, "i").test(joined));
+    const times = [...joined.matchAll(/\b\d{1,2}:\d{2}\b/g)].map((match) => match[0]);
+    const location = cells.find((cell) => /^(PA3|SK2|SK3|LTCL|Harry Perkins|Auditorium)/i.test(normalise(cell)));
+    if (!day || times.length < 2 || !location) continue;
+    events.push({
+      day: DAY_INDEX.get(day),
+      start: minutes(times[0]),
+      end: minutes(times[1]),
+      subject: subjectFor(joined),
+      location: locationFor(location),
     });
+  }
 
-    const events = [];
-    for (const grid of grids) {
-      const headerCells = [...grid.rows[0].cells]
-        .map((cell) => ({ label: norm(cell.textContent || ""), rect: cell.getBoundingClientRect() }))
-        .filter(({ label }) => days.includes(label));
-
-      for (const row of [...grid.rows]) {
-        const timeCell = row.cells[0];
-        const time = norm(timeCell?.textContent || "");
-        if (!/^\d{1,2}:\d{2}$/.test(time)) continue;
-        const start = Number(time.split(":")[0]) * 60 + Number(time.split(":")[1]);
-
-        for (const cell of [...row.cells]) {
-          const text = norm(cell.textContent || "");
-          if (!cell.querySelector("table") || !groupMatches(text)) continue;
-          if (!text.includes("CMFP0050") && !text.includes("CMFP0060")) continue;
-
-          const rect = cell.getBoundingClientRect();
-          const day = headerCells.find(({ rect: header }) =>
-            rect.left + rect.width / 2 >= header.left && rect.left + rect.width / 2 <= header.right
-          )?.label;
-          if (!day) continue;
-
-          const nestedCells = [...cell.querySelectorAll("td")].map((item) => norm(item.textContent || ""));
-          const location = nestedCells.find((item) =>
-            /^(PA3|SK2|SK3|LTCL|Harry Perkins|Auditorium)/.test(item)
-          ) || "";
-          events.push({
-            day: days.indexOf(day),
-            start,
-            end: start + Math.max(30, (cell.rowSpan || 1) * 30),
-            subject: text,
-            location,
-          });
-        }
-      }
-    }
-    return events;
-  }, { group, days: DAYS });
+  if (events.length === 0) throw new Error(`List report format was not recognised for ${group}; refusing to update data.`);
+  return events;
 }
 
 const browser = await chromium.launch({ headless: true });
 try {
   const page = await browser.newPage();
-  await openTimetable(page);
+  await openListReport(page);
 
   for (const group of TARGETS) {
-    const rawEvents = await collect(page, group);
     const timetable = Object.fromEntries([...Array(7).keys()].map((day) => [String(day), []]));
-    for (const event of rawEvents) {
+    for (const event of await collect(page, group)) {
       timetable[String(event.day)].push({
-        start: event.start,
-        end: event.end,
-        subject: subjectFor(event.subject),
-        location: locationFor(event.location),
+        start: event.start, end: event.end, subject: event.subject, location: event.location,
       });
     }
     for (const events of Object.values(timetable)) {
