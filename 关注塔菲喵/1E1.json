@@ -13,7 +13,6 @@
       "location": "Auditorium"
     }
   ],
-
   "1": [
     {
       "start": 480,
@@ -28,7 +27,6 @@
       "location": "Auditorium"
     }
   ],
-
   "2": [
     {
       "start": 480,
@@ -40,10 +38,9 @@
       "start": 600,
       "end": 720,
       "subject": "Physics (lab)",
-      "location": "SK2 101 (ME 101)"
+      "location": "SK2 101 (ME 101) Physic Lab"
     }
   ],
-
   "3": [
     {
       "start": 480,
@@ -58,7 +55,6 @@
       "location": "PA3 207"
     }
   ],
-
   "4": [
     {
       "start": 900,
@@ -67,8 +63,6 @@
       "location": "PA3 103 (Computer Lab)"
     }
   ],
-
   "5": [],
-
   "6": []
 }
