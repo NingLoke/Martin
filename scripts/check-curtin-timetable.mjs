@@ -10,7 +10,7 @@ const UNITS = [
 const TARGETS = ["1E1", "1E8"];
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const LOCATION_MAP = new Map([
-  ["PA3 103 (Computer Lab)", "PA3 103 (Computer Lab)"],
+  ["PA3 103", "PA3 103 (Computer Lab)"],
   ["PA3 106", "PA3-106"],
   ["PA3 108", "PA3-108"],
   ["PA3 206", "PA3-206"],
@@ -21,15 +21,15 @@ const LOCATION_MAP = new Map([
 ]);
 
 const normalise = (value) => value.replace(/\s+/g, " ").trim();
-const locationFor = (value) => LOCATION_MAP.get(normalise(value)) ?? normalise(value);
+const locationFor = (value) => {
+  const key = normalise(value).replace(/\s+\(Computer Lab\)$/, "");
+  return LOCATION_MAP.get(key) ?? key;
+};
 const subjectFor = (text) => {
   const unit = text.includes("CMFP0060") ? "ICT" : "Physics";
   const type = text.includes("Laboratory") ? "lab" : text.includes("Tutorial") ? "tutorial" : "lecture";
   return `${unit} (${type})`;
 };
-const groupMatches = (text, group) =>
-  new RegExp(`(^|[^A-Z0-9])${group}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`).test(text) ||
-  text.includes("1E1-8");
 
 async function openTimetable(page) {
   await page.goto("http://sws.curtin.edu.my/login.aspx", { waitUntil: "domcontentloaded", timeout: 60_000 });
@@ -46,39 +46,52 @@ async function openTimetable(page) {
 async function collect(page, group) {
   return page.evaluate(({ group, days }) => {
     const norm = (value) => value.replace(/\s+/g, " ").trim();
-    const matches = (value) =>
+    const groupMatches = (value) =>
       new RegExp(`(^|[^A-Z0-9])${group}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`).test(value) ||
       value.includes("1E1-8");
 
-    const rows = [...document.querySelectorAll("tr")];
-    const times = rows
-      .map((row) => {
-        const first = norm(row.querySelector("td")?.textContent || "");
-        return /^\d{1,2}:\d{2}$/.test(first) ? { row, minutes: Number(first.slice(0, first.indexOf(":"))) * 60 + Number(first.slice(first.indexOf(":") + 1)) } : null;
-      })
-      .filter(Boolean);
-
-    const dayHeaders = [...document.querySelectorAll("td")]
-      .map((cell) => ({ cell, text: norm(cell.textContent || ""), rect: cell.getBoundingClientRect() }))
-      .filter(({ text }) => days.includes(text));
-
-    const candidates = [...document.querySelectorAll("td")]
-      .filter((cell) => cell.querySelector("table") && matches(norm(cell.textContent || "")))
-      .filter((cell) => ![...cell.children].some((child) => child.tagName === "TD" && matches(norm(child.textContent || ""))));
+    const grids = [...document.querySelectorAll("table")].filter((table) => {
+      const firstRow = table.rows[0];
+      const header = firstRow ? [...firstRow.cells].map((cell) => norm(cell.textContent || "")) : [];
+      return days.every((day) => header.includes(day));
+    });
 
     const events = [];
-    for (const cell of candidates) {
-      const text = norm(cell.textContent || "");
-      if (!text.includes("CMFP0050") && !text.includes("CMFP0060")) continue;
-      const rect = cell.getBoundingClientRect();
-      const day = dayHeaders.find(({ rect: h }) => rect.left + rect.width / 2 >= h.left && rect.left + rect.width / 2 <= h.right)?.text;
-      const row = times.find(({ row }) => row === cell.closest("tr"));
-      if (!day || !row) continue;
-      const duration = Math.max(30, (cell.rowSpan || 1) * 30);
-      const location = norm([...cell.querySelectorAll("td")].map((item) => norm(item.textContent || "")).find((item) =>
-        /^(PA3|SK2|SK3|LTCL|Harry Perkins|Auditorium)/.test(item)
-      ) || "");
-      events.push({ day: days.indexOf(day), start: row.minutes, end: row.minutes + duration, subject: text, location });
+    for (const grid of grids) {
+      const headerCells = [...grid.rows[0].cells]
+        .map((cell) => ({ label: norm(cell.textContent || ""), rect: cell.getBoundingClientRect() }))
+        .filter(({ label }) => days.includes(label));
+
+      for (const row of [...grid.rows]) {
+        const timeCell = row.cells[0];
+        const time = norm(timeCell?.textContent || "");
+        if (!/^\d{1,2}:\d{2}$/.test(time)) continue;
+        const start = Number(time.split(":")[0]) * 60 + Number(time.split(":")[1]);
+
+        for (const cell of [...row.cells]) {
+          const text = norm(cell.textContent || "");
+          if (!cell.querySelector("table") || !groupMatches(text)) continue;
+          if (!text.includes("CMFP0050") && !text.includes("CMFP0060")) continue;
+
+          const rect = cell.getBoundingClientRect();
+          const day = headerCells.find(({ rect: header }) =>
+            rect.left + rect.width / 2 >= header.left && rect.left + rect.width / 2 <= header.right
+          )?.label;
+          if (!day) continue;
+
+          const nestedCells = [...cell.querySelectorAll("td")].map((item) => norm(item.textContent || ""));
+          const location = nestedCells.find((item) =>
+            /^(PA3|SK2|SK3|LTCL|Harry Perkins|Auditorium)/.test(item)
+          ) || "";
+          events.push({
+            day: days.indexOf(day),
+            start,
+            end: start + Math.max(30, (cell.rowSpan || 1) * 30),
+            subject: text,
+            location,
+          });
+        }
+      }
     }
     return events;
   }, { group, days: DAYS });
@@ -104,6 +117,7 @@ try {
       events.sort((a, b) => a.start - b.start || a.subject.localeCompare(b.subject));
     }
 
+    console.log(`Calculated ${group}: ${JSON.stringify(timetable)}`);
     const filename = path.join("关注塔菲喵", `${group}.json`);
     const current = JSON.parse(await readFile(filename, "utf8"));
     if (JSON.stringify(current) !== JSON.stringify(timetable)) {
