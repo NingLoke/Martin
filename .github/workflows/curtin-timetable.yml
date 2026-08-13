@@ -2,7 +2,7 @@ name: Curtin timetable check
 
 on:
   schedule:
-    - cron: "17 23 * * *" # 07:17 Malaysia time (UTC+8)
+    - cron: "0 23 * * *" # 07:00 Malaysia time (UTC+8)
   workflow_dispatch:
 
 permissions:
@@ -41,7 +41,7 @@ jobs:
         run: rm -rf node_modules
 
       - name: Create timetable change pull request
-        if: ${{ false }}
+        if: steps.changes.outputs.found == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
