@@ -32,7 +32,7 @@ jobs:
         id: changes
         shell: bash
         run: |
-          if git diff --quiet -- "关注塔菲喵/1E1.json" "关注塔菲喵/1E8.json"; then
+          if git diff --quiet -- "关注塔菲喵/1E1.json" "关注塔菲喵/1E8.json" "关注塔菲喵/last-updated.json"; then
             echo "found=false" >> "$GITHUB_OUTPUT"
           else
             echo "found=true" >> "$GITHUB_OUTPUT"
@@ -47,6 +47,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- "关注塔菲喵/1E1.json" "关注塔菲喵/1E8.json"
+          git add -- "关注塔菲喵/1E1.json" "关注塔菲喵/1E8.json" "关注塔菲喵/last-updated.json"
           git commit -m "Update Curtin timetables"
           git push origin HEAD:main
