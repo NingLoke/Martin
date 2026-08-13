@@ -3,8 +3,32 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const SCHOOL = "School of Pre-U and Continues Studies";
-const UNITS = ["CMFP0050 Physics 1", "CMFP0060 Information & Communication Technology"];
-const TARGETS = ["1E1", "1E8"];
+
+const UNIT_DEFINITIONS = {
+  CMFP0021: { label: "CMFP0021 Effective Communication Skills", subject: "ECS" },
+  CMFP0042: { label: "CMFP0042 Mathematics 2", subject: "Math 2" },
+  CMFP0050: { label: "CMFP0050 Physics 1", subject: "Physics" },
+  CMFP0060: { label: "CMFP0060 Information & Communication Technology", subject: "ICT" },
+};
+
+const TIMETABLES = {
+  "1E1": [
+    { unit: "CMFP0050", group: "1E1" },
+    { unit: "CMFP0060", group: "1E1" },
+  ],
+  "1E8": [
+    { unit: "CMFP0050", group: "1E8" },
+    { unit: "CMFP0060", group: "1E8" },
+  ],
+  test: [
+    { unit: "CMFP0021", group: "Group A" },
+    { unit: "CMFP0042", group: "2E1" },
+  ],
+};
+
+const UNITS = [...new Set(
+  Object.values(TIMETABLES).flat().map(({ unit }) => UNIT_DEFINITIONS[unit].label)
+)];
 
 const normalise = (value) => value.replace(/\s+/g, " ").trim();
 const minutes = (time) => {
@@ -18,11 +42,18 @@ const dayFor = (date) => {
   const dayOfWeek = new Date(Date.UTC(2000 + Number(match[3]), Number(match[2]) - 1, Number(match[1]))).getUTCDay();
   return dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 };
-const subjectFor = (description, type) =>
-  `${description.includes("CMFP0060") ? "ICT" : "Physics"} (${type === "Laboratory" ? "lab" : type.toLowerCase()})`;
-const groupMatches = (value, group) =>
-  new RegExp(`(^|[^A-Z0-9])${group}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`, "i").test(value) ||
-  value.includes("1E1-8");
+const subjectFor = (description, type) => {
+  const unit = Object.keys(UNIT_DEFINITIONS).find((code) => description.includes(code));
+  if (!unit) throw new Error(`Unknown unit: ${description}`);
+  return `${UNIT_DEFINITIONS[unit].subject} (${type === "Laboratory" ? "lab" : type.toLowerCase()})`;
+};
+const groupMatches = (value, group) => {
+  if (new RegExp(`(^|[^A-Z0-9])${group.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\s*\\(Reserve\\))?(?=$|[^A-Z0-9])`, "i").test(value)) {
+    return true;
+  }
+  const cohort = group.match(/^(\dE)[1-8]$/i);
+  return cohort ? new RegExp(`(^|[^A-Z0-9])${cohort[1]}1-8(?=$|[^A-Z0-9])`, "i").test(value) : false;
+};
 const canonical = (timetable) => JSON.stringify(Object.fromEntries(Object.entries(timetable).map(([day, events]) => [
   day,
   events.map((event) => ({
@@ -51,13 +82,15 @@ async function openListReport(page) {
   await page.waitForTimeout(1_000);
 }
 
-async function collect(page, group) {
+async function collect(page, name, selections) {
   const rows = await page.locator("tr").evaluateAll((elements) => elements.map((row) =>
     [...row.cells].map((cell) => (cell.textContent || "").replace(/\s+/g, " ").trim())
   ).filter((cells) => cells.length === 11));
 
   const events = rows
-    .filter((cells) => groupMatches(cells[1], group) && /CMFP00(?:50|60)/.test(cells[2]))
+    .filter((cells) => selections.some(({ unit, group }) =>
+      cells[2].includes(unit) && groupMatches(cells[1], group)
+    ))
     .map((cells) => ({
       day: dayFor(cells[4]),
       start: minutes(cells[5]),
@@ -66,7 +99,7 @@ async function collect(page, group) {
       location: cells[9],
     }));
 
-  if (events.length === 0) throw new Error(`List report format was not recognised for ${group}; refusing to update data.`);
+  if (events.length === 0) throw new Error(`List report format was not recognised for ${name}; refusing to update data.`);
   return events;
 }
 
@@ -77,9 +110,9 @@ try {
 
   let changed = false;
 
-  for (const group of TARGETS) {
+  for (const [name, selections] of Object.entries(TIMETABLES)) {
     const timetable = Object.fromEntries([...Array(7).keys()].map((day) => [String(day), []]));
-    for (const event of await collect(page, group)) {
+    for (const event of await collect(page, name, selections)) {
       timetable[String(event.day)].push({
         start: event.start, end: event.end, subject: event.subject, location: event.location,
       });
@@ -88,8 +121,8 @@ try {
       events.sort((a, b) => a.start - b.start || a.subject.localeCompare(b.subject));
     }
 
-    console.log(`Calculated ${group}: ${JSON.stringify(timetable)}`);
-    const filename = path.join("关注塔菲喵", `${group}.json`);
+    console.log(`Calculated ${name}: ${JSON.stringify(timetable)}`);
+    const filename = path.join("关注塔菲喵", `${name}.json`);
     const current = JSON.parse(await readFile(filename, "utf8"));
     if (canonical(current) !== canonical(timetable)) {
       await writeFile(filename, `${JSON.stringify(timetable, null, 2)}\n`);
