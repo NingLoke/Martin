@@ -845,22 +845,20 @@ async function loadClasses() {
         }
 
 
-        const savedClass =
-            localStorage.getItem(
-                "selectedClass"
+        const defaultClass =
+            classList.find(
+
+                item =>
+                    item.name === "1E8"
+
             );
 
 
         const firstClass =
 
-            classList.some(
+            defaultClass
 
-                item =>
-                    item.name === savedClass
-
-            )
-
-            ? savedClass
+            ? defaultClass.name
 
             : classList[0].name;
 
