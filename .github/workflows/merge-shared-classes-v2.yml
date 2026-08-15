@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/merge-shared-classes-v2.yml'
+      - 'scripts/merge-shared-classes-v2.py'
   workflow_dispatch:
 permissions:
   contents: write
