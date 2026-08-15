@@ -1854,14 +1854,26 @@ function renderFullTimetable() {
                 : [];
 
             dayCourses.forEach(course => {
-                courses.push({ ...course, className: classInfo.name });
+                const existing = courses.find(item =>
+                    item.start === course.start &&
+                    item.end === course.end &&
+                    item.subject === course.subject &&
+                    item.location === course.location
+                );
+
+                if (existing) {
+                    existing.classNames.push(classInfo.name);
+                }
+                else {
+                    courses.push({ ...course, classNames: [classInfo.name] });
+                }
             });
         });
 
         courses.sort((a, b) =>
             a.start - b.start ||
             a.end - b.end ||
-            a.className.localeCompare(b.className)
+            a.classNames.join(', ').localeCompare(b.classNames.join(', '))
         );
     }
     else {
@@ -1883,7 +1895,7 @@ function renderFullTimetable() {
         div.className = "full-course";
 
         const classLabel = selectedViewMode === "all"
-            ? `　👥 ${escapeHTML(course.className)}`
+            ? `　👥 ${escapeHTML(course.classNames.join(", "))}`
             : "";
 
         div.innerHTML = `
