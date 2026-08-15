@@ -10,7 +10,7 @@
       "start": 900,
       "end": 1020,
       "subject": "Math 2 (tutorial)",
-      "location": "PA3 205"
+      "location": "PA3 204"
     }
   ],
   "1": [
@@ -19,12 +19,6 @@
       "end": 720,
       "subject": "Math 2 (lecture)",
       "location": "SK3 103 Lecture 2"
-    },
-    {
-      "start": 720,
-      "end": 840,
-      "subject": "Math 2 (tutorial)",
-      "location": "SK3 104 Lecture 3"
     }
   ],
   "2": [],
@@ -41,7 +35,7 @@
       "start": 480,
       "end": 600,
       "subject": "Math 2 (tutorial)",
-      "location": "PA3 205"
+      "location": "PA3 207"
     },
     {
       "start": 840,
