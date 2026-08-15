@@ -24,10 +24,6 @@ const TIMETABLES = {
     { unit: "CMFP0021", group: "2E3" },
     { unit: "CMFP0042", group: "A" },
   ],
-  test2: [
-    { unit: "CMFP0021", group: "2E3" },
-    { unit: "CMFP0042", group: "B" },
-  ],
 };
 
 const UNITS = [...new Set(
