@@ -1,0 +1,50 @@
+{
+  "0": [
+    {
+      "start": 780,
+      "end": 900,
+      "subject": "Programming (lecture)",
+      "location": "SK3 104 Lecture 3"
+    }
+  ],
+  "1": [
+    {
+      "start": 660,
+      "end": 840,
+      "subject": "Programming (lab)",
+      "location": "PA3 103 Computer Lab"
+    }
+  ],
+  "2": [
+    {
+      "start": 480,
+      "end": 600,
+      "subject": "Programming (lecture)",
+      "location": "SK3 104 Lecture 3"
+    },
+    {
+      "start": 660,
+      "end": 840,
+      "subject": "Programming (lab)",
+      "location": "PA3 103 Computer Lab"
+    }
+  ],
+  "3": [
+    {
+      "start": 480,
+      "end": 660,
+      "subject": "ECS (seminar)",
+      "location": "SK3 206 Collaborative Room 2"
+    }
+  ],
+  "4": [
+    {
+      "start": 840,
+      "end": 1020,
+      "subject": "ECS (seminar)",
+      "location": "SK3 205 Collaborative Room 1"
+    }
+  ],
+  "5": [],
+  "6": []
+}
