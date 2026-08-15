@@ -10,5 +10,9 @@
     {
         "name": "test",
         "file": "关注塔菲喵/test.json"
+    },
+    {
+        "name": "test2",
+        "file": "关注塔菲喵/test2.json"
     }
 ]
