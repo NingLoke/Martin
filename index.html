@@ -242,6 +242,11 @@ h1 {
     color: white;
 }
 
+.view-mode-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 10px;
+}
+
 /* 完整课表 */
 
 .full-course {
@@ -462,6 +467,11 @@ h1 {
         </div>
 
         <div
+            class="day-buttons view-mode-buttons"
+            id="viewModeButtons">
+        </div>
+
+        <div
             class="day-buttons"
             id="viewDayButtons">
         </div>
@@ -585,6 +595,12 @@ let schedule =
     );
 
 let selectedViewDay = 0;
+
+let selectedViewMode = "class";
+
+let allSchedules = {};
+
+let allSchedulesLoaded = false;
 
 let selectedEditDay = 0;
 
@@ -1682,6 +1698,75 @@ function update() {
 
 
 /* =====================================================
+   读取所有班级课表
+   ===================================================== */
+
+async function loadAllSchedules() {
+    const loaded = {};
+
+    for (const classInfo of classList) {
+        const personal = loadPersonalSchedule(classInfo.name);
+
+        if (personal) {
+            loaded[classInfo.name] = copySchedule(personal);
+            continue;
+        }
+
+        try {
+            const response = await fetch(classInfo.file);
+            if (!response.ok) throw new Error("无法读取 " + classInfo.file);
+            loaded[classInfo.name] = await response.json();
+        }
+        catch (error) {
+            console.error(error);
+            loaded[classInfo.name] = copySchedule(defaultSchedule);
+        }
+    }
+
+    allSchedules = loaded;
+    allSchedulesLoaded = true;
+}
+
+
+/* =====================================================
+   完整课表查看模式
+   ===================================================== */
+
+function renderViewModeButtons() {
+    const container = document.getElementById("viewModeButtons");
+    container.innerHTML = "";
+
+    const modes = [
+        { value: "class", label: "当前班级" },
+        { value: "all", label: "所有人" }
+    ];
+
+    modes.forEach(mode => {
+        const button = document.createElement("button");
+        button.className = "day-button";
+
+        if (mode.value === selectedViewMode) {
+            button.classList.add("active");
+        }
+
+        button.textContent = mode.label;
+        button.onclick = async function() {
+            selectedViewMode = mode.value;
+            renderViewModeButtons();
+
+            if (selectedViewMode === "all" && !allSchedulesLoaded) {
+                await loadAllSchedules();
+            }
+
+            renderFullTimetable();
+        };
+
+        container.appendChild(button);
+    });
+}
+
+
+/* =====================================================
    完整课表星期按钮
    ===================================================== */
 
@@ -1752,84 +1837,67 @@ function renderViewDays() {
    ===================================================== */
 
 function renderFullTimetable() {
+    const container = document.getElementById("fullTimetable");
+    let courses = [];
 
-    const container =
-        document.getElementById(
-            "fullTimetable"
+    if (selectedViewMode === "all") {
+        if (!allSchedulesLoaded) {
+            container.innerHTML = `<div class="no-course">正在读取所有人的课表...</div>`;
+            loadAllSchedules().then(renderFullTimetable);
+            return;
+        }
+
+        classList.forEach(classInfo => {
+            const classSchedule = allSchedules[classInfo.name];
+            const dayCourses = classSchedule && classSchedule[selectedViewDay]
+                ? classSchedule[selectedViewDay]
+                : [];
+
+            dayCourses.forEach(course => {
+                courses.push({ ...course, className: classInfo.name });
+            });
+        });
+
+        courses.sort((a, b) =>
+            a.start - b.start ||
+            a.end - b.end ||
+            a.className.localeCompare(b.className)
         );
-
-
-    const courses =
-        schedule[selectedViewDay] || [];
-
-
-    if (
-        courses.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="no-course">
-                今天没有课程
-            </div>
-
-        `;
-
-        return;
-
+    }
+    else {
+        courses = (schedule[selectedViewDay] || []).map(course => ({
+            ...course,
+            className: currentClass
+        }));
     }
 
+    if (courses.length === 0) {
+        container.innerHTML = `<div class="no-course">今天没有课程</div>`;
+        return;
+    }
 
     container.innerHTML = "";
 
+    courses.forEach(course => {
+        const div = document.createElement("div");
+        div.className = "full-course";
 
-    courses.forEach(
+        const classLabel = selectedViewMode === "all"
+            ? `　👥 ${escapeHTML(course.className)}`
+            : "";
 
-        course => {
+        div.innerHTML = `
+            <div class="full-course-subject">${escapeHTML(course.subject)}</div>
+            <div class="full-course-info">
+                🕐 ${courseTime(course)}${classLabel}<br>
+                📍 ${escapeHTML(course.location)}
+            </div>
+        `;
 
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-            div.className =
-                "full-course";
-
-
-            div.innerHTML = `
-
-                <div class="full-course-subject">
-
-                    ${escapeHTML(
-                        course.subject
-                    )}
-
-                </div>
-
-                <div class="full-course-info">
-
-                    🕐 ${courseTime(course)}
-
-                    <br>
-
-                    📍 ${escapeHTML(
-                        course.location
-                    )}
-
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                div
-            );
-
-        }
-
-    );
-
+        container.appendChild(div);
+    });
 }
+
 
 
 /* =====================================================
@@ -2159,6 +2227,8 @@ function saveSchedule() {
 
     savePersonalSchedule();
 
+    allSchedulesLoaded = false;
+
     update();
 
     renderFullTimetable();
@@ -2224,6 +2294,8 @@ async function resetSchedule() {
         );
 
 
+        allSchedulesLoaded = false;
+
         update();
 
         renderEditor();
@@ -2259,6 +2331,8 @@ function openTimetable() {
     ).style.display =
         "block";
 
+
+    renderViewModeButtons();
 
     renderViewDays();
 
