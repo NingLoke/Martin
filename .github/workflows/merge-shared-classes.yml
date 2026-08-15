@@ -1,0 +1,84 @@
+name: Merge shared timetable classes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/merge-shared-classes.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Merge identical all-view courses
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+
+          old = '''        courses.sort((a, b) =>
+            a.start - b.start ||
+            a.end - b.end ||
+            a.className.localeCompare(b.className)
+        );
+    }
+    else {'''
+
+          new = '''        const mergedCourses = [];
+
+        courses.forEach(course => {
+            const existing = mergedCourses.find(item =>
+                item.start === course.start &&
+                item.end === course.end &&
+                item.subject === course.subject &&
+                item.location === course.location
+            );
+
+            if (existing) {
+                existing.classNames.push(course.className);
+            }
+            else {
+                mergedCourses.push({
+                    ...course,
+                    classNames: [course.className]
+                });
+            }
+        });
+
+        courses = mergedCourses.map(course => ({
+            ...course,
+            className: course.classNames.join(", ")
+        }));
+
+        courses.sort((a, b) =>
+            a.start - b.start ||
+            a.end - b.end ||
+            a.className.localeCompare(b.className)
+        );
+    }
+    else {'''
+
+          if old not in text:
+              raise SystemExit("Expected all-view sorting block not found")
+
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit website update
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Merge shared classes in all timetable view"
+          git push origin HEAD:main
