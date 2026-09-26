@@ -100,6 +100,10 @@ async function collect(page, name, selections) {
     [...row.cells].map((cell) => (cell.textContent || "").replace(/\s+/g, " ").trim())
   ).filter((cells) => cells.length === 11));
 
+  console.log(`[Diagnostic] Total 11-cell rows: ${rows.length}`);
+  console.log(`[Diagnostic] Unique groups:`, [...new Set(rows.map(r => r[1]))]);
+  console.log(`[Diagnostic] Unique units:`, [...new Set(rows.map(r => r[2]))]);
+
   const events = rows
     .filter((cells) => selections.some(({ unit, group }) =>
       cells[2].includes(unit) && groupMatches(cells[1], group)
