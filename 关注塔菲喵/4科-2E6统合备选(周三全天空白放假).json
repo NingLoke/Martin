@@ -17,20 +17,20 @@
       "end": 900,
       "subject": "Programming (lecture)",
       "location": "Auditorium"
+    },
+    {
+      "start": 990,
+      "end": 1080,
+      "subject": "ECS (seminar)",
+      "location": "PA3 204"
     }
   ],
   "1": [
     {
-      "start": 840,
-      "end": 1020,
-      "subject": "Programming (laboratory)",
-      "location": "PA3 106 (Computer Lab)"
-    },
-    {
-      "start": 1020,
-      "end": 1110,
-      "subject": "ECS (seminar)",
-      "location": "PA3 201"
+      "start": 480,
+      "end": 660,
+      "subject": "Physics 2 (workshop)",
+      "location": "SK2 101 (ME 101) Physic Lab"
     }
   ],
   "2": [],
@@ -42,10 +42,16 @@
       "location": "Auditorium"
     },
     {
-      "start": 840,
+      "start": 780,
+      "end": 870,
+      "subject": "ECS (seminar)",
+      "location": "SK3 103 Lecture 2"
+    },
+    {
+      "start": 930,
       "end": 1020,
-      "subject": "Physics 2 (workshop)",
-      "location": "SK3 206 Collaborative Room 2,SK2 101 (ME 101) Physic Lab"
+      "subject": "Math 2 (tutorial)",
+      "location": "PA3 209"
     }
   ],
   "4": [
@@ -53,13 +59,13 @@
       "start": 600,
       "end": 690,
       "subject": "Math 2 (tutorial)",
-      "location": "TBA"
+      "location": "PA3 210"
     },
     {
       "start": 840,
-      "end": 930,
-      "subject": "ECS (seminar)",
-      "location": "PA3 210"
+      "end": 1020,
+      "subject": "Programming (laboratory)",
+      "location": "PA3 103 (Computer Lab)"
     }
   ],
   "5": [],

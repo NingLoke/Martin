@@ -37,20 +37,20 @@
       "end": 570,
       "subject": "ECS (seminar)",
       "location": "PA3 203"
-    },
-    {
-      "start": 660,
-      "end": 840,
-      "subject": "Physics 2 (workshop)",
-      "location": "SK3 206 Collaborative Room 2,SK2 101 (ME 101) Physic Lab"
     }
   ],
   "2": [
     {
-      "start": 660,
-      "end": 840,
+      "start": 480,
+      "end": 660,
       "subject": "Programming (laboratory)",
       "location": "PA3 106 (Computer Lab)"
+    },
+    {
+      "start": 780,
+      "end": 960,
+      "subject": "Physics 2 (workshop)",
+      "location": "SK3 205 Collaborative Room 1,SK2 101 (ME 101) Physic Lab"
     }
   ],
   "3": [
