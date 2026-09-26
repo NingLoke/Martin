@@ -1,55 +1,49 @@
 {
   "0": [
     {
-      "start": 600,
-      "end": 720,
+      "start": 480,
+      "end": 600,
       "subject": "Math 2 (lecture)",
-      "location": "SK3 104 Lecture 3"
-    },
-    {
-      "start": 900,
-      "end": 1020,
-      "subject": "Math 2 (tutorial)",
-      "location": "PA3 205"
+      "location": "SK3 102 Lecture 1"
     }
   ],
   "1": [
     {
-      "start": 600,
-      "end": 720,
-      "subject": "Math 2 (lecture)",
-      "location": "SK3 103 Lecture 2"
+      "start": 480,
+      "end": 570,
+      "subject": "ECS (seminar)",
+      "location": "LTCL 9 (HL2-109)"
     },
     {
-      "start": 720,
-      "end": 840,
-      "subject": "Math 2 (tutorial)",
-      "location": "SK3 104 Lecture 3"
-    }
-  ],
-  "2": [],
-  "3": [
-    {
-      "start": 480,
-      "end": 660,
-      "subject": "ECS (seminar)",
-      "location": "SK3 206 Collaborative Room 2"
-    }
-  ],
-  "4": [
-    {
-      "start": 480,
-      "end": 600,
-      "subject": "Math 2 (tutorial)",
-      "location": "PA3 205"
-    },
-    {
-      "start": 840,
-      "end": 1020,
-      "subject": "ECS (seminar)",
+      "start": 1020,
+      "end": 1110,
+      "subject": "Math 2 (clinic)",
       "location": "SK3 205 Collaborative Room 1"
     }
   ],
+  "2": [
+    {
+      "start": 480,
+      "end": 570,
+      "subject": "Math 2 (tutorial)",
+      "location": "PA3 209"
+    }
+  ],
+  "3": [
+    {
+      "start": 600,
+      "end": 690,
+      "subject": "Math 2 (tutorial)",
+      "location": "PA3 209"
+    },
+    {
+      "start": 1020,
+      "end": 1110,
+      "subject": "ECS (seminar)",
+      "location": "PA3 203"
+    }
+  ],
+  "4": [],
   "5": [],
   "6": []
 }
