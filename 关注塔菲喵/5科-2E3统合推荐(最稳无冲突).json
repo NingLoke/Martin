@@ -1,0 +1,86 @@
+{
+  "0": [
+    {
+      "start": 480,
+      "end": 600,
+      "subject": "Math 2 (lecture)",
+      "location": "SK3 102 Lecture 1"
+    },
+    {
+      "start": 600,
+      "end": 720,
+      "subject": "Physics 2 (lecture)",
+      "location": "SK3 102 Lecture 1"
+    },
+    {
+      "start": 780,
+      "end": 900,
+      "subject": "Programming (lecture)",
+      "location": "Auditorium"
+    },
+    {
+      "start": 1020,
+      "end": 1200,
+      "subject": "Academic English (seminar)",
+      "location": "LTCL 9 (HL2-109)"
+    }
+  ],
+  "1": [
+    {
+      "start": 480,
+      "end": 570,
+      "subject": "ECS (seminar)",
+      "location": "LTCL 9 (HL2-109)"
+    }
+  ],
+  "2": [
+    {
+      "start": 660,
+      "end": 840,
+      "subject": "Programming (laboratory)",
+      "location": "PA3 106 (Computer Lab)"
+    },
+    {
+      "start": 960,
+      "end": 1140,
+      "subject": "Physics 2 (workshop)",
+      "location": "SK2 101 (ME 101) Physic Lab,SK3 205 Collaborative Room 1"
+    }
+  ],
+  "3": [
+    {
+      "start": 660,
+      "end": 780,
+      "subject": "Physics 2 (clinic)",
+      "location": "Auditorium"
+    },
+    {
+      "start": 930,
+      "end": 1020,
+      "subject": "Math 2 (tutorial)",
+      "location": "PA3 209"
+    },
+    {
+      "start": 1020,
+      "end": 1110,
+      "subject": "ECS (seminar)",
+      "location": "PA3 203"
+    }
+  ],
+  "4": [
+    {
+      "start": 600,
+      "end": 690,
+      "subject": "Math 2 (tutorial)",
+      "location": "PA3 210"
+    },
+    {
+      "start": 900,
+      "end": 1080,
+      "subject": "Academic English (seminar)",
+      "location": "LTCL 10 (HL2-110)"
+    }
+  ],
+  "5": [],
+  "6": []
+}
