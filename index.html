@@ -806,7 +806,7 @@ async function loadClasses() {
 
         const response =
             await fetch(
-                "/Martin/关注塔菲喵/classes.json"
+                "关注塔菲喵/classes.json"
             );
 
         if (!response.ok) {
@@ -1736,35 +1736,11 @@ async function loadAllSchedules() {
 
 function renderViewModeButtons() {
     const container = document.getElementById("viewModeButtons");
-    container.innerHTML = "";
-
-    const modes = [
-        { value: "class", label: "当前班级" },
-        { value: "all", label: "所有人" }
-    ];
-
-    modes.forEach(mode => {
-        const button = document.createElement("button");
-        button.className = "day-button";
-
-        if (mode.value === selectedViewMode) {
-            button.classList.add("active");
-        }
-
-        button.textContent = mode.label;
-        button.onclick = async function() {
-            selectedViewMode = mode.value;
-            renderViewModeButtons();
-
-            if (selectedViewMode === "all" && !allSchedulesLoaded) {
-                await loadAllSchedules();
-            }
-
-            renderFullTimetable();
-        };
-
-        container.appendChild(button);
-    });
+    if (container) {
+        container.style.display = "none";
+        container.innerHTML = "";
+    }
+    selectedViewMode = "class";
 }
 
 
@@ -2419,7 +2395,7 @@ async function loadLastUpdated() {
 
         const response =
             await fetch(
-                "/Martin/关注塔菲喵/last-updated.json",
+                "关注塔菲喵/last-updated.json",
                 { cache: "no-store" }
             );
 
