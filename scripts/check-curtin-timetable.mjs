@@ -116,7 +116,7 @@ async function collect(page, name, selections) {
       location: cells[9],
     }));
 
-  if (events.length === 0) throw new Error(`List report format was not recognised for ${name}; refusing to update data.`);
+  if (rows.length === 0) throw new Error(`List report format was not recognised (table has 0 data rows); refusing to update data.`);
   return events;
 }
 
@@ -129,7 +129,12 @@ try {
 
   for (const [name, selections] of Object.entries(TIMETABLES)) {
     const timetable = Object.fromEntries([...Array(7).keys()].map((day) => [String(day), []]));
-    for (const event of await collect(page, name, selections)) {
+    const events = await collect(page, name, selections);
+    if (events.length === 0) {
+      console.warn(`[Warning] No events matched for ${name}; retaining existing schedule.`);
+      continue;
+    }
+    for (const event of events) {
       timetable[String(event.day)].push({
         start: event.start, end: event.end, subject: event.subject, location: event.location,
       });
