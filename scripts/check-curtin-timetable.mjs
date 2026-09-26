@@ -88,7 +88,7 @@ async function openListReport(page) {
     return match.value;
   });
   await unitSelect.selectOption(selectedValues);
-  await page.locator("select[name=lbWeeks]").selectOption("29-43");
+  await page.locator("select[name=lbWeeks]").selectOption({ index: 0 });
   await page.locator("select[name=lbDays]").selectOption("1-5");
   await page.locator("select[name=dlType]").selectOption({ label: "List" });
   await page.getByRole("button", { name: "View Timetable", exact: true }).click();
